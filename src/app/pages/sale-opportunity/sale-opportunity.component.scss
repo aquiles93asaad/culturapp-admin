@@ -1,0 +1,11 @@
+.w-field{
+    width: 100%;
+}
+
+.mat-grid-tile{
+    justify-content: normal !important;
+}
+
+::ng-deep .mat-vertical-stepper-header {
+    pointer-events: none !important;
+}

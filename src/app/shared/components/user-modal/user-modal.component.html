@@ -1,0 +1,81 @@
+<h1 *ngIf="data.user == null" mat-dialog-title class="text-center mb-3">Agregar usuario a {{data.company.name}}</h1>
+<h1 *ngIf="data.user != null" mat-dialog-title class="text-center mb-3">Editar usuario de {{data.user.name}} {{data.user.lastName}}</h1>
+<div mat-dialog-content >
+    <form [formGroup]="userForm" class="h-100 d-flex flex-column">
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Nombre" type="text" name="name" formControlName="name" [required]="true">
+                <mat-error *ngIf="!!f.name.errors">
+                    <span *ngIf="!!f.name.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Apellido" type="text" name="lastName" formControlName="lastName" [required]="true">
+                <mat-error *ngIf="!!f.lastName.errors">
+                    <span *ngIf="!!f.lastName.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Email" type="email" name="email" formControlName="email" [required]="true">
+                <mat-error *ngIf="!!f.email.errors">
+                    <span *ngIf="!!f.email.errors.required">Este campo es obligatorio</span>
+                    <span *ngIf="!!f.email.errors.email">El email ingresado es incorrecto</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="DNI" type="text" name="documentId" formControlName="documentId" [required]="true">
+                <mat-error *ngIf="!!f.documentId.errors">
+                    <span *ngIf="!!f.documentId.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6" *ngIf="!inSalesChannel && canChooseProfile">
+                <mat-label>Perfiles</mat-label>
+                <mat-select multiple name="profiles" formControlName="profiles" [required]="true">
+                    <mat-option *ngFor="let typeProfile of profile" [value]="typeProfile">{{typeProfile | titlecase}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="!!f.profiles.errors">
+                    <span *ngIf="!!f.profiles.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-6">
+                <mat-label>Roles</mat-label>
+                <mat-select multiple name="roles" formControlName="roles" [required]="true">
+                    <mat-option *ngFor="let typeRole of role" [value]="typeRole">{{typeRole | titlecase}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="!!f.roles.errors">
+                    <span *ngIf="!!f.roles.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Teléfono" type="text" name="phone" formControlName="phone">
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-6">
+                <mat-label>Supervisor</mat-label>
+                <mat-select name="supervisor" formControlName="supervisor">
+                    <mat-option *ngFor="let user of supervisors" [value]="user._id">{{user.name}} {{user.lastName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        
+        <div class="row d-flex justify-content-center align-items-center flex-grow-1">
+            <button mat-raised-button color="primary" [mat-dialog-close] class="mr-3 on-hover-box-shadow">Cancelar</button>
+            <button mat-raised-button color="primary" class="on-hover-box-shadow d-flex justify-content-center" (click)="submitForm()" [disabled]="!userForm.valid && !isSubmitting">
+                <span *ngIf="!isSubmitting">Finalizar</span>
+                <mat-spinner class="py-2" color="accent" diameter="20" *ngIf="isSubmitting"></mat-spinner>
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,58 @@
+:host /deep/ {
+
+    .carousel {
+        outline: none !important;
+
+        .carousel-inner {
+            height: calc(100% - 13px);
+
+            .carousel-item {
+                height: 100%;
+                
+                img {
+                    max-height: 85%;
+                }
+
+                .carousel-caption {
+                    padding-bottom: 0;
+                    padding-top: 0;
+                    left: 0;
+                    right: 0;
+                    
+                    p {
+                        color: black;
+                    }
+                }
+            }
+        }
+
+        .carousel-indicators {
+            li {
+                background-color: black !important;
+            }
+        }
+        
+        .carousel-control-prev {
+            left: -2.5%;
+
+            .carousel-control-prev-icon {
+                background-image: url("assets/icons/arrow-left.svg") !important;
+            }
+        }
+        
+        .carousel-control-next {
+            right: -2.5%;
+
+            .carousel-control-next-icon {
+                background-image: url("assets/icons/arrow-right.svg") !important;
+            }
+        }
+
+        .carousel-control-next,
+        .carousel-control-prev {
+            width: 5% !important;
+            opacity: 1 !important;
+            cursor: pointer;
+        }
+    }
+}

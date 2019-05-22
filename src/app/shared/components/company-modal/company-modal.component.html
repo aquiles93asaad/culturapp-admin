@@ -1,0 +1,118 @@
+<h1 mat-dialog-title class="text-center mb-3">Agregar empresa</h1>
+<div mat-dialog-content>
+    <form [formGroup]="companyForm" class="h-100 d-flex flex-column">
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Nombre" type="text" name="name" formControlName="name">
+                <mat-error *ngIf="!!f.name.errors">
+                    <span *ngIf="!!f.name.errors.required">Este campo es obligatorio</span>
+                    <span *ngIf="!f.name.errors.required && !!f.name.errors.invalidCompany">{{ f.name.errors.invalidCompany }}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-md-6">
+                <input matInput placeholder="Cuit/Ruc" type="text" name="cuit" formControlName="cuit">
+                <mat-error *ngIf="!!f.cuit.errors">
+                    <span *ngIf="!!f.cuit.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <mat-label>País</mat-label>
+                <mat-select name="country" formControlName="country">
+                    <mat-option *ngFor="let country of countries" [value]="country">{{country}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="!!f.country.errors">
+                    <span *ngIf="!!f.country.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Teléfono de contacto" type="text" name="phone"
+                    formControlName="phone">
+                <mat-error *ngIf="!!f.phone.errors">
+                    <span *ngIf="!!f.phone.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Cantidad de Empleados" type="number" name="employeesCount"
+                    formControlName="employeesCount">
+                <mat-error *ngIf="!!f.employeesCount.errors">
+                    <span *ngIf="!!f.employeesCount.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Cantidad de sucursales" type="number" name="branchesNumber"
+                    formControlName="branchesNumber">
+                <mat-error *ngIf="!!f.branchesNumber.errors">
+                    <span *ngIf="!!f.branchesNumber.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <!-- <input matInput placeholder="Industria" type="select" name="industry" formControlName="industry">
+                <mat-error *ngIf="!!f.industry.errors">
+                    <span *ngIf="!!f.industry.errors.required">Este campo es obligatorio</span>
+                </mat-error> -->
+                <mat-label>Industria</mat-label>
+                <mat-select name="industry" formControlName="industry">
+                    <mat-option *ngFor="let industries of industries" [value]="industries.name">{{industries.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Facturación Anual" type="number" name="anualBilling"
+                    formControlName="anualBilling">
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Dirección" type="text" name="address"
+                    formControlName="address">
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Website" type="text" name="webSite"
+                    formControlName="webSite">
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-radio-group class="col-12 big-check" formControlName="type" name="type">
+                <span class="mr-5">Tamaño</span>
+                <mat-radio-button class="mr-5" value="small" color="primary" name="type">Pequeña</mat-radio-button>
+                <mat-radio-button class="mr-5" value="medium" color="primary" name="type">Mediana</mat-radio-button>
+                <mat-radio-button value="big" color="primary" name="type">Grande</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        <div class="row mb-3">
+            <mat-radio-group class="col-12 big-check" formControlName="origin" name="origin">
+                <span class="mr-5">Presencia</span>
+                <mat-radio-button class="mr-5" value="international" color="primary" name="origin">Internacional</mat-radio-button>
+                <mat-radio-button value="national" color="primary" name="origin">Nacional</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        <div class="row mb-3">
+            <mat-checkbox class="col-12 big-check" color="primary" name="hasStandard" formControlName="hasStandard">Estándar de calidad</mat-checkbox>
+        </div>
+
+        <div class="row mb-3 d-flex justify-content-center align-items-center flex-grow-1">
+            <button mat-raised-button color="primary" [mat-dialog-close] class="mr-3 on-hover-box-shadow">Cancelar</button>
+            <button mat-raised-button color="primary" class="on-hover-box-shadow d-flex justify-content-center" (click)="submitForm()" [disabled]="!companyForm.valid && !isSubmitting">
+                <span *ngIf="!isSubmitting">Finalizar</span>
+                <mat-spinner class="py-2" color="accent" diameter="20" *ngIf="isSubmitting"></mat-spinner>
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,65 @@
+<div class="auth-container container-fluid pb-4 pb-md-0 h-100">
+    <mat-grid-list cols="2">
+        <mat-grid-tile [colspan]="1">
+            <div class="intro-container d-none d-lg-block text-center">
+                <!-- <h1 class="mb-4">Cloudesk</h1>
+                <h5 class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h5> -->
+                <img class="cloudesk-logo" src="assets/images/logo-cloudesk.png" alt="">
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1">
+            <mat-card class="auth-panel d-flex justify-content-center flex-column bg-card-color">
+                <mat-card-title class="text-center">{{ header }}</mat-card-title>
+                <mat-card-content class="mb-4">
+                    <form class="text-center" [formGroup]="authForm" (ngSubmit)="submitForm()">
+                        <!-- Email Login -->
+                        <mat-form-field class="d-block pb-1" *ngIf="authType == 'login'">
+                            <input matInput placeholder="Email" class="" formControlName="username">
+                            <mat-error *ngIf="!!f.username.errors">
+                                <span *ngIf="!!f.username.errors.required">Este campo es obligatorio</span>
+                                <span *ngIf="!!f.username.errors.invalidUser">{{ errorMessage }}</span>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <!-- Password -->
+                        <mat-form-field class="d-block pb-1" *ngIf="authType == 'login'">
+                            <input matInput type="password" placeholder="Contraseña" class="" formControlName="password">
+                            <mat-error *ngIf="!!f.password.errors">
+                                <span *ngIf="!!f.password.errors.required">Este campo es obligatorio</span>
+                                <span *ngIf="!!f.password.errors.invalidPassword">{{ errorMessage }}</span>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <!-- Email Register -->
+                        <mat-form-field class="d-block pb-1" *ngIf="authType == 'register'">
+                            <input matInput placeholder="Email" class="" formControlName="email">
+                            <mat-error *ngIf="!!f.email.errors">
+                                <span *ngIf="!!f.email.errors.required">Este campo es obligatorio</span>
+                                <span *ngIf="!f.email.errors.required && !!f.email.errors.email">Debe ingresar un email válido</span>
+                                <span *ngIf="!!f.email.errors.userExists">{{ errorMessage }}</span>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <div class="clearfix mb-3 mt-2" *ngIf="authType == 'login'">
+                            <div class="float-left">
+                                <!-- Remember me -->
+                                <mat-checkbox formControlName="rememberMe" color="primary">Recordame</mat-checkbox>
+                            </div>
+                            <div class="float-right forgot-pass" [hidden]="true">
+                                <!-- Forgot password -->
+                                <a class="" href="">¿Olvidaste tu contraseña?</a>
+                            </div>
+                        </div>
+
+                        <!-- Sign in button -->
+                        <button mat-raised-button [color]="themeColor" class="on-hover-box-shadow d-block w-100 mt-3">{{ submitBtnText }}</button>
+                    </form>
+                </mat-card-content>
+                <!-- <mat-card-actions class="pl-2 m-0">
+                    <h6 class="d-inline-block text-center">{{ changeAccess }}</h6>
+                    <a class="ml-2" routerLink="{{changeAccessRoute}}">{{ changeAccessBtn }}</a>
+                </mat-card-actions> -->
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

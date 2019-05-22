@@ -1,0 +1,66 @@
+<header>
+    <mat-toolbar [color]="themeColor" class="mat-elevation-z8">
+        <button class="hamburger hamburger--squeeze mr-4 is-active" [ngClass]="{'is-active': toggleHamburger}" type="button" (click)="toggleSidenav()">
+            <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+            </span>
+        </button>
+        <a [routerLink]="['/dashboard/inicio']" class="logo" (click)="sidenav.close(); (toggleHamburger) ? toggleHamburger = false : toggleHamburger = toggleHamburger;"></a>
+        <div class="themes-switcher ml-4" [ngClass]="{'primary': themeColor == 'primary', 'accent': themeColor == 'accent'}" [hidden]="true">
+            <a class="links side" *ngIf="user" [matMenuTriggerFor]="themeMenu">
+                <mat-icon [color]="themeColor">color_lens</mat-icon>
+            </a>
+            <mat-menu #themeMenu="matMenu">
+                <button mat-menu-item (click)="themeColor = 'primary'">
+                    <mat-icon color="primary" >color_lens</mat-icon>
+                </button>
+                <button mat-menu-item (click)="themeColor = 'accent'">
+                    <mat-icon color="accent">color_lens</mat-icon>
+                </button>
+            </mat-menu>
+        </div>
+        <span class="example-spacer"></span>
+        <div>
+            <a *ngIf="user && (router.url.includes('inicio')||router.url.includes('oportunidad-de-venta')||router.url.includes('oportunidades')||router.url.includes('reportes')||router.url.includes('mi-equipo')||router.url.includes('canales-de-venta'))" (click)="faqs()">
+                <img class="right-logo" matTooltip="Ayuda" src="assets/images/faqs-icon.png">
+            </a>
+            <a class="links side" *ngIf="user" [matMenuTriggerFor]="menu">
+                {{user.name | titlecase}} {{user.lastName | titlecase}} <img class="right-logo" src="assets/images/user-icon.png">
+            </a>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="profile()">Perfil</button>
+                <button mat-menu-item (click)="logout()">Salir</button>
+            </mat-menu>
+        </div>
+    </mat-toolbar>
+    <div [hidden]="!loading" class="loader">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+</header>
+
+<mat-sidenav-container (backdropClick)="sidenav.close(); (toggleHamburger) ? toggleHamburger = false : toggleHamburger = true;"
+    *ngIf="!router.url.includes('login') && !router.url.includes('register') && !router.url.includes('new-user')" [ngClass]="{ 'loading': loading }">
+
+    <mat-sidenav #sidenav (keydown.escape)="sidenav.close()" disableClose [attr.color]="themeColor" autoFocus="false" width="320px">
+        <mat-list>
+            <mat-list-item [routerLink]="['/dashboard/inicio']" (click)="sidenav.close(); (toggleHamburger) ? toggleHamburger = false : toggleHamburger = true;">
+                <img src="assets/images/menu/home-white.png" class="order-1 align-self-center mr-3 normal">
+                <img src="assets/images/menu/home-blue.png" class="order-1 align-self-center mr-3 hover">
+                <h4 mat-line>Inicio</h4>
+            </mat-list-item>
+            <mat-list-item *ngFor="let navItem of navItems" [routerLink]="[navItem.href]" (click)="sidenav.close(); (toggleHamburger) ? toggleHamburger = false : toggleHamburger = true;">
+                <img src="assets/images/menu/{{navItem.name}}-white.png" class="order-1 align-self-center mr-3 normal">
+                <img src="assets/images/menu/{{navItem.name}}-blue.png" class="order-1 align-self-center mr-3 hover">
+                <h4 mat-line>{{navItem.text}}</h4>
+            </mat-list-item>
+        </mat-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content color="primary">
+        <!-- <div class="wrapper-app h-100"
+            [ngClass]="{'top-displacement px-4 pb-4': !router.url.includes('login') && !router.url.includes('register') && !router.url.includes('new-user')}"> -->
+        <div class="wrapper-app h-100 px-5 pb-4">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

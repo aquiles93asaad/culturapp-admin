@@ -1,0 +1,65 @@
+<div class="w-100 mb-3">
+    <form [formGroup]="filterForm">
+        <div class="w-100">
+            <div class="col-11 pl-0 d-inline-flex">
+                <div *ngFor="let filter of mainFilters, let first = first; let last = last" class="pl-0" [ngClass]="{'flex-grow-1': first, 'pr-3': !last}">
+                    <mat-form-field *ngIf="filter.type == 'string'" class="col-12 px-0">
+                        <mat-label>{{filter.placeholder}}</mat-label>
+                        <input matInput [formControlName]="filter.name">
+                        <mat-hint *ngIf="filter.hint" align="end">{{filter.hint}}</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="filter.type == 'select'" class="col-12 px-0">
+                        <mat-label>{{filter.placeholder}}</mat-label>
+                        <mat-select *ngIf="filter.condition == 'in'" multiple [formControlName]="filter.name">
+                            <mat-option *ngFor="let option of filter.options" [value]="option.value">{{option.label}}</mat-option>
+                        </mat-select>
+                        <mat-select *ngIf="filter.condition == 'equal'" [formControlName]="filter.name">
+                            <mat-option *ngFor="let option of filter.options" [value]="option.value">{{option.label}}</mat-option>
+                        </mat-select>
+                        <mat-hint *ngIf="filter.hint" align="end">{{filter.hint}}</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="filter.type == 'date'" class="col-12 px-0">
+                        <input matInput [matDatepicker]="i" [placeholder]="filter.placeholder" [formControlName]="filter.name">
+                        <mat-datepicker-toggle matSuffix [for]="i"></mat-datepicker-toggle>
+                        <mat-datepicker #i></mat-datepicker>
+                        <mat-hint *ngIf="filter.hint" align="end">{{filter.hint}}</mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-1 d-inline-flex justify-content-end align-items-center">
+                <button mat-mini-fab matTooltip="Más filtros" matTooltipPosition="below" class="on-hover-box-shadow mr-3"
+                    (click)="onToggleSearch()" color="primary" *ngIf="secondaryFilters.length != 0">
+                    <i class="material-icons" [@searchButtonToggler]="{ value: advanceSearchState }">{{searchIcon}}</i>
+                </button>
+                <button mat-mini-fab matTooltip="Aplicar filtros" matTooltipPosition="below" class="on-hover-box-shadow"
+                    (click)="applyFilter()" color="primary">
+                    <i class="material-icons">filter_list</i>
+                </button>
+            </div>
+        </div>
+        <div class="w-100" [@advancedSearchToggler]="{ value: advanceSearchState }" *ngIf="secondaryFilters.length != 0">
+            <div class="col-12 px-0">
+                <div class="col-3 pl-0" *ngFor="let filter of secondaryFilters, let i = index">
+                    <mat-form-field *ngIf="filter.type == 'string'" class="col-12 px-0">
+                        <mat-label>{{filter.placeholder}}</mat-label>
+                        <input matInput [formControlName]="filter.name">
+                        <mat-hint *ngIf="filter.hint" align="end">{{filter.hint}}</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="filter.type == 'select'" class="col-12 px-0">
+                        <mat-label>{{filter.placeholder}}</mat-label>
+                        <mat-select multiple [formControlName]="filter.name">
+                            <mat-option *ngFor="let option of filter.options" [value]="option.value">{{option.label}}</mat-option>
+                        </mat-select>
+                        <mat-hint *ngIf="filter.hint" align="end">{{filter.hint}}</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="filter.type == 'date'" class="col-12 px-0">
+                        <input matInput [matDatepicker]="i" [placeholder]="filter.placeholder" [formControlName]="filter.name">
+                        <mat-datepicker-toggle matSuffix [for]="i"></mat-datepicker-toggle>
+                        <mat-datepicker #i></mat-datepicker>
+                        <mat-hint *ngIf="filter.hint" align="end">{{filter.hint}}</mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

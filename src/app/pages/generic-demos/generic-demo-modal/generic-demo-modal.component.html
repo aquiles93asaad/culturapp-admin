@@ -1,0 +1,34 @@
+<h1 mat-dialog-title class="text-center mb-3">Agregar demo generica</h1>
+<div mat-dialog-content>
+    <form [formGroup]="genericDemoForm" class="h-100 d-flex flex-column">
+        <div class="row mb-3">
+            <mat-form-field class="col-12">
+                <input matInput placeholder="Nombre de la demo" type="text" name="name" formControlName="name"
+                    [required]="true">
+                <mat-error *ngIf="!!f.name.errors">
+                    <span *ngIf="!!f.name.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12">
+                <textarea matInput placeholder="Descripción de la demo" type="textarea" name="description"
+                    formControlName="description" [required]="true"></textarea>
+                <mat-error *ngIf="!!f.description.errors">
+                    <span *ngIf="!!f.description.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row d-flex justify-content-center align-items-center flex-grow-1">
+            <button mat-raised-button [color]="themeColor" [mat-dialog-close]
+                class="mr-4 on-hover-box-shadow">Cancelar</button>
+            <button mat-raised-button [color]="themeColor" class="on-hover-box-shadow d-flex justify-content-center"
+                (click)="submitForm()" [disabled]="!genericDemoForm.valid && !isSubmitting">
+                <span *ngIf="!isSubmitting">Guardar</span>
+                <mat-spinner class="py-2" color="accent" diameter="20" *ngIf="isSubmitting"></mat-spinner>
+            </button>
+        </div>
+    </form>
+</div>

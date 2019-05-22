@@ -1,0 +1,61 @@
+<div class="row">
+    <div class="col text-center">
+        <i class="material-icons" style="font-size:120px">account_circle</i>
+    </div>
+</div>
+
+<form class="w-75 mx-auto" [formGroup]="profile">
+        <!-- email -->
+        <mat-form-field class="d-block">
+            <input matInput placeholder="Email" class="f-gray" formControlName="email" [readonly]="true">
+        </mat-form-field>
+
+        <!-- name -->
+        <mat-form-field class="d-block">
+            <input matInput placeholder="Nombre" class="f-dark" formControlName="name" [readonly]="true">
+        </mat-form-field>
+
+        <!-- lastName -->
+        <mat-form-field class="d-block">
+            <input matInput placeholder="Apellido" class="f-dark" formControlName="lastName" [readonly]="true">
+        </mat-form-field>
+
+        <!-- phone -->
+        <mat-form-field class="d-block">
+            <input matInput placeholder="Teléfono/Celular" class="f-dark" formControlName="phone">
+        </mat-form-field>
+
+        <div formGroupName="passwords">
+                <mat-form-field class="d-block">
+                    <input matInput type="password" placeholder="Nueva contraseña" class="f-dark"
+                        formControlName="password" [required]="passwords['repeat'].value != ''">
+                    <mat-error *ngIf="!!passwords.password.errors">
+                        <span *ngIf="!!passwords.password.errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+    
+                <mat-form-field class="d-block">
+                    <input matInput type="password" placeholder="Confirmar nueva contraseña" class="f-dark"
+                        formControlName="repeat" [required]="passwords['password'].value != ''">
+                    <mat-error *ngIf="!!passwords.repeat.errors">
+                        <span *ngIf="!!passwords.repeat.errors.required">Campo obligatorio</span>
+                        <span
+                            *ngIf="!passwords.repeat.errors.required && !!passwords.repeat.errors.MatchFields">Las
+                            contraseñas no coinciden</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+        <div class="row w-100">
+            <button mat-raised-button color="primary" class="d-flex justify-content-center w-25 mx-auto mt-4 on-hover-box-shadow" type="submit" (click)="onNoClick()">
+                <span>Cancelar</span>
+            </button>
+            
+            <button mat-raised-button color="primary" class="d-flex justify-content-center w-25 mx-auto mt-4 on-hover-box-shadow" 
+            form="profile" type="submit" [disabled]="!profile.valid && !isSubmitting" [ngClass]="{ 'py-2': isSubmitting }" (click)="sumbitForm()">
+                <span *ngIf="!isSubmitting">Actualizar</span>
+            <mat-spinner class="py-2" color="accent" diameter="30" *ngIf="isSubmitting"></mat-spinner>
+            </button>
+        </div>
+
+    </form>

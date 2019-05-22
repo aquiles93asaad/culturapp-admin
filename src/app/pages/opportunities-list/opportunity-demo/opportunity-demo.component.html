@@ -1,0 +1,113 @@
+<h1 mat-dialog-title class="text-center mb-3">Demo para "{{opportunity.name}}"</h1>
+<div mat-dialog-content>
+    <form [formGroup]="demoForm" class="h-100 d-flex flex-column">
+        <div class="row mb-3">
+            <mat-radio-group class="col-12 big-check" name="demoType" formControlName="demoType" [required]="true">
+                <span class="mr-5">Tipo demo: </span>
+                <mat-radio-button class="mr-5" value="GENERIC" color="primary" name="demoType">Generica
+                </mat-radio-button>
+                <mat-radio-button value="CUSTOM" color="primary" name="demoType">Personalizada</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        <div class="row mb-4">
+            <mat-form-field class="col-12" *ngIf="demoForm.get('demoType').value == 'GENERIC'">
+                <mat-label>Demos genericas</mat-label>
+                <mat-select multiple name="chosenGenericDemos" formControlName="chosenGenericDemos"
+                    [required]="demoForm.get('demoType').value == 'GENERIC'" (selectionChange)="setChosenDemo()">
+                    <mat-option *ngFor="let demo of genericDemos" [value]="demo._id">{{demo.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="col-12 d-flex align-items-center" *ngIf="chosenGenericDemos && chosenGenericDemos.length > 0">
+                <div class="col-12 p-0" *ngFor="let demo of chosenGenericDemos">
+                    <h6>{{demo.name}}</h6>
+                    <p class="m-0">{{demo.description}}</p>
+                </div>
+            </div>
+
+            <mat-form-field class="col-12" *ngIf="demoForm.get('demoType').value == 'CUSTOM'">
+                <textarea matInput placeholder="Descripción de demo a realizar" type="textarea" name="description"
+                    formControlName="description" [required]="demoForm.get('demoType').value == 'CUSTOM'"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput [matDatepicker]="possibleDate_1" placeholder="Primera fecha tentativa"
+                    formControlName="possibleDate_1" [required]="true">
+                <mat-datepicker-toggle matSuffix [for]="possibleDate_1"></mat-datepicker-toggle>
+                <mat-datepicker #possibleDate_1></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput type="time" placeholder="Horario primera fecha" formControlName="possibleDate_1_time"
+                    [required]="true">
+                <mat-error *ngIf="!!f.possibleDate_1_time.errors">
+                    <span *ngIf="!!f.possibleDate_1_time.errors.required">Campo obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput [matDatepicker]="possibleDate_2" placeholder="Segunda fecha tentativa"
+                    formControlName="possibleDate_2">
+                <mat-datepicker-toggle matSuffix [for]="possibleDate_2"></mat-datepicker-toggle>
+                <mat-datepicker #possibleDate_2></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput type="time" placeholder="Horario segunda fecha" formControlName="possibleDate_2_time"
+                    [required]="demoForm.get('possibleDate_2').value != '' && demoForm.get('possibleDate_2').value != null">
+                <mat-error *ngIf="!!f.possibleDate_2_time.errors">
+                    <span *ngIf="!!f.possibleDate_2_time.errors.required">Campo obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput [matDatepicker]="possibleDate_3" placeholder="Tercera fecha tentativa"
+                    formControlName="possibleDate_3">
+                <mat-datepicker-toggle matSuffix [for]="possibleDate_3"></mat-datepicker-toggle>
+                <mat-datepicker #possibleDate_3></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput type="time" placeholder="Horario tercera fecha" formControlName="possibleDate_3_time"
+                    [required]="demoForm.get('possibleDate_3').value != '' && demoForm.get('possibleDate_3').value != null">
+                <mat-error *ngIf="!!f.possibleDate_3_time.errors">
+                    <span *ngIf="!!f.possibleDate_3_time.errors.required">Campo obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput [matDatepicker]="selectedDate" placeholder="Fecha seleccionada"
+                    formControlName="selectedDate">
+                <mat-datepicker-toggle matSuffix [for]="selectedDate"></mat-datepicker-toggle>
+                <mat-datepicker #selectedDate></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput type="time" placeholder="Horario seleccionado" formControlName="selectedDate_time"
+                    [required]="demoForm.get('selectedDate_time').value != '' && demoForm.get('selectedDate_time').value != null">
+                <mat-error *ngIf="!!f.selectedDate_time.errors">
+                    <span *ngIf="!!f.selectedDate_time.errors.required">Campo obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row d-flex justify-content-center align-items-center flex-grow-1">
+            <button mat-raised-button [color]="themeColor" [mat-dialog-close]
+                class="mr-4 on-hover-box-shadow">Cancelar</button>
+            <button mat-raised-button [color]="themeColor" class="on-hover-box-shadow d-flex justify-content-center"
+                (click)="submitForm()" [disabled]="!demoForm.valid && !isSubmitting">
+                <span *ngIf="!isSubmitting">Solicitar</span>
+                <mat-spinner class="py-2" color="accent" diameter="20" *ngIf="isSubmitting"></mat-spinner>
+            </button>
+        </div>
+    </form>
+</div>

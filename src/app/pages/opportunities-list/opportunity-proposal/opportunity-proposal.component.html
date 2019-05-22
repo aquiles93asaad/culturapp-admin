@@ -1,0 +1,271 @@
+<h1 mat-dialog-title class="text-center mb-3">Propuesta para "{{data.opportunity.name}}"</h1>
+<div mat-dialog-content>
+    <form [formGroup]="proposalForm" class="h-100 d-flex flex-column">
+        <div class="row d-flex align-items-center">
+            <mat-checkbox class="col-12 col-sm-6 big-check" color="primary" name="hasThLicenses"
+                formControlName="hasThLicenses">
+                ¿Tiene Licencias de Thuban Software?
+            </mat-checkbox>
+
+            <mat-form-field class="col-12 col-sm-6" [hidden]="!proposalForm.get('hasThLicenses').value">
+                <input matInput placeholder="Licencias de Thuban Software" type="number" name="thLicenses"
+                    formControlName="thLicenses" [required]="proposalForm.get('hasThLicenses').value">
+                <mat-error *ngIf="!!f.thLicenses.errors">
+                    <span *ngIf="!!f.thLicenses.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row d-flex align-items-center mb-2">
+            <mat-checkbox class="col-12 col-sm-6 big-check" color="primary" name="hasCkLicenses"
+                formControlName="hasCkLicenses">
+                ¿Tiene Licencias de Captika Software?
+            </mat-checkbox>
+
+            <mat-form-field class="col-12 col-sm-6" [hidden]="!proposalForm.get('hasCkLicenses').value">
+                <input matInput placeholder="Licencias de Captika Software " type="number" name="ckLicenses"
+                    formControlName="ckLicenses" [required]="proposalForm.get('hasCkLicenses').value">
+                <mat-error *ngIf="!!f.ckLicenses.errors">
+                    <span *ngIf="!!f.ckLicenses.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-2">
+            <mat-checkbox class="col-12 col-sm-4 big-check" color="primary" name="newLicenses"
+                formControlName="newLicenses"
+                [required]="!proposalForm.get('hasThLicenses').value && !proposalForm.get('hasCkLicenses').value">
+                ¿Requiere licencias nuevas?
+            </mat-checkbox>
+
+            <mat-checkbox class="col-12 col-sm-4 big-check" color="primary" name="needConsulting"
+                formControlName="needConsulting">
+                ¿Requiere consultoría?
+            </mat-checkbox>
+
+            <mat-form-field class="col-12 col-sm-4">
+                <input matInput placeholder="Duración del contrato (Años)" type="number" name="contractDuration"
+                    formControlName="contractDuration" [required]="true">
+                <mat-error *ngIf="!!f.contractDuration.errors">
+                    <span *ngIf="!!f.contractDuration.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-2" [hidden]="!proposalForm.get('newLicenses').value">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Nuevas licencias de Thuban Software" type="number" name="newThLicenses"
+                    formControlName="newThLicenses"
+                    [required]="proposalForm.get('newLicenses').value && (proposalForm.get('newCkLicenses').value == null || proposalForm.get('newCkLicenses').value == 0)">
+                <mat-error *ngIf="!!f.newThLicenses.errors">
+                    <span *ngIf="!!f.newThLicenses.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Nuevas licencias de Captika Software" type="number" name="newCkLicenses"
+                    formControlName="newCkLicenses"
+                    [required]="proposalForm.get('newLicenses').value && (proposalForm.get('newThLicenses').value == null || proposalForm.get('newThLicenses').value == 0)">
+                <mat-error *ngIf="!!f.newCkLicenses.errors">
+                    <span *ngIf="!!f.newCkLicenses.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-2" [hidden]="!solutionField()">
+            <mat-form-field class="col-12 col-sm-6">
+                <mat-label>Solución</mat-label>
+                <mat-select name="chosenSolution" formControlName="chosenSolution" [required]="solutionField()"
+                    (selectionChange)="addSolutionQuestions()">
+                    <mat-option *ngFor="let solution of solutions" [value]="solution._id">{{solution.name}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="!!f.chosenSolution.errors">
+                    <span *ngIf="!!f.chosenSolution.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+            <div class="col-12 col-sm-6 d-flex align-items-center">
+                <p class="m-0" *ngIf="chosenSolution && chosenSolution.name != 'Otra'">
+                    {{chosenSolution.description}}
+                </p>
+            </div>
+        </div>
+
+        <div class="row mb-2"
+            *ngIf="chosenSolution != null && (chosenSolution.name != 'Otra' && (chosenSolution.questions && chosenSolution.questions.length != 0) )">
+            <div class="col-12 p-0" *ngFor="let question of chosenSolution.questions; let i = index">
+                <mat-form-field class="col-12 col-sm-6" *ngIf="question.dataType == 'Number' || question.dataType == 'String'">
+                    <input *ngIf="question.dataType == 'Number'" matInput placeholder="{{question.label}}" type="number"
+                        [formControlName]="['solutionsQuestions_' + i]" [required]="true">
+                    <input *ngIf="question.dataType == 'String'" matInput placeholder="{{question.label}}" type="text"
+                        [formControlName]="['solutionsQuestions_' + i]" [required]="true">
+                </mat-form-field>
+                <mat-checkbox *ngIf="question.dataType == 'Boolean'" class="col-12 col-sm-6 big-check"
+                    color="primary" [formControlName]="['solutionsQuestions_' + i]">
+                    {{question.label}}
+                </mat-checkbox>
+            </div>
+        </div>
+
+        <div class="mb-2" *ngIf="chosenSolution != null && chosenSolution.name == 'Otra'">
+            <div class="row" *ngIf="data.opportunity.digitization">
+                <mat-form-field class="col-12 col-sm-6">
+                    <input matInput placeholder="Tipo documentales a digitalizar" type="number"
+                        name="digitization_docTypes" formControlName="digitization_docTypes" [required]="true">
+                    <mat-error *ngIf="!!f.digitization_docTypes.errors">
+                        <span *ngIf="!!f.digitization_docTypes.errors.required">Este campo es obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-sm-6">
+                    <input matInput placeholder="Promedio de campos por tipo documental a digitalizar" type="number"
+                        name="digitization_avFieldsDocType" formControlName="digitization_avFieldsDocType"
+                        [required]="true">
+                    <mat-error *ngIf="!!f.digitization_avFieldsDocType.errors">
+                        <span *ngIf="!!f.digitization_avFieldsDocType.errors.required">Este campo es obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-checkbox class="col-12 col-sm-6 big-check" color="primary" name="digitization_autoRecognition"
+                    formControlName="digitization_autoRecognition">
+                    Requiere reconocer automaticamente los documentos?
+                </mat-checkbox>
+
+                <mat-form-field class="col-12 col-sm-6">
+                    <input matInput placeholder="Tipos de documentos a reconocer" type="number"
+                        name="digitization_autoRecognitionDocs" formControlName="digitization_autoRecognitionDocs"
+                        [required]="proposalForm.get('digitization_autoRecognition').value">
+                    <mat-error *ngIf="!!f.digitization_autoRecognitionDocs.errors">
+                        <span *ngIf="!!f.digitization_autoRecognitionDocs.errors.required">Este campo es
+                            obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-checkbox class="col-12 col-sm-6 big-check" color="primary" name="digitization_docsPdfTextLayer"
+                    formControlName="digitization_docsPdfTextLayer">
+                    Los documentos son PDF con capa de texto?
+                </mat-checkbox>
+
+                <mat-checkbox class="col-12 col-sm-6 big-check" color="primary" name="digitization_docsBarcode"
+                    formControlName="digitization_docsBarcode">
+                    Los documentos vienen con códigos de barras?
+                </mat-checkbox>
+
+                <mat-checkbox class="col-12 col-sm-6 big-check" color="primary" name="digitization_extractDocsData"
+                    formControlName="digitization_extractDocsData">
+                    Requiere extraer datos de los documentos?
+                </mat-checkbox>
+
+                <mat-form-field class="col-12 col-sm-6">
+                    <input matInput placeholder="Promedio de campos a extraer" type="number"
+                        name="digitization_avExtractFields" formControlName="digitization_avExtractFields"
+                        [required]="proposalForm.get('digitization_extractDocsData').value">
+                    <mat-error *ngIf="!!f.digitization_avExtractFields.errors">
+                        <span *ngIf="!!f.digitization_avExtractFields.errors.required">Este campo es obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="row" *ngIf="data.opportunity.docManager">
+                <mat-form-field class="col-12 col-sm-6">
+                    <input matInput placeholder="Cantidad de Clases documentales" type="number"
+                        name="docManager_docsClasses" formControlName="docManager_docsClasses" [required]="true">
+                    <mat-error *ngIf="!!f.docManager_docsClasses.errors">
+                        <span *ngIf="!!f.docManager_docsClasses.errors.required">Este campo es obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-sm-6">
+                    <input matInput placeholder="Promedio de campos por Clase Documental" type="number"
+                        name="docManager_avFieldsDocClass" formControlName="docManager_avFieldsDocClass"
+                        [required]="true">
+                    <mat-error *ngIf="!!f.docManager_avFieldsDocClass.errors">
+                        <span *ngIf="!!f.docManager_avFieldsDocClass.errors.required">Este campo es obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-checkbox class="col-12 big-check" color="primary" name="docManager_storageLogic"
+                    formControlName="docManager_storageLogic">
+                    Configuración de estructuras logicas de almacenamiento
+                </mat-checkbox>
+            </div>
+
+            <div class="row" *ngIf="data.opportunity.automation">
+                <mat-form-field class="col-12 col-sm-6">
+                    <input matInput placeholder="Cantidad de workflows" type="number" name="automation_workflows"
+                        formControlName="automation_workflows" [required]="true">
+                    <mat-error *ngIf="!!f.automation_workflows.errors">
+                        <span *ngIf="!!f.automation_workflows.errors.required">Este campo es obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-sm-6">
+                    <input matInput placeholder="Promedio de estados por workflow" type="number"
+                        name="automation_avStatesWorkflow" formControlName="automation_avStatesWorkflow"
+                        [required]="true">
+                    <mat-error *ngIf="!!f.automation_avStatesWorkflow.errors">
+                        <span *ngIf="!!f.automation_avStatesWorkflow.errors.required">Este campo es obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-sm-6">
+                    <input matInput placeholder="Monitores" type="number" name="automation_monitors"
+                        formControlName="automation_monitors">
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-sm-6">
+                    <input matInput placeholder="Grupos participantes" type="number" name="automation_groups"
+                        formControlName="automation_groups" [required]="true">
+                    <mat-error *ngIf="!!f.automation_groups.errors">
+                        <span *ngIf="!!f.automation_groups.errors.required">Este campo es obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-sm-6">
+                    <input matInput placeholder="Cantidad de prototipos a presentar" type="number"
+                        name="automation_prototypes" formControlName="automation_prototypes" [maxLength]="3">
+                    <mat-error *ngIf="!!f.automation_prototypes.errors">
+                        <span *ngIf="!!f.automation_prototypes.errors.maxLength">Máximo 3 prototipos</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <mat-radio-group class="col-12 big-check" name="implementation_type"
+                    formControlName="implementation_type" *ngIf="data.opportunity.docManager"
+                    [required]="data.opportunity.docManager">
+                    <span class="mr-5">Tipo implementación:</span>
+                    <mat-radio-button class="mr-5" value="On premise" color="primary" name="implementation_type">On
+                        premise</mat-radio-button>
+                    <mat-radio-button value="Cloud" color="primary" name="implementation_type">Cloud</mat-radio-button>
+                </mat-radio-group>
+
+                <mat-checkbox class="col-12 col-sm-6 big-check" color="primary" name="implementation_adIntegration"
+                    formControlName="implementation_adIntegration">
+                    Integración con AD
+                </mat-checkbox>
+
+                <mat-checkbox class="col-12 col-sm-6 big-check" color="primary" name="implementation_adminsTraining"
+                    formControlName="implementation_adminsTraining">
+                    Capacitación a administradores
+                </mat-checkbox>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <mat-form-field class="col-12">
+                <textarea matInput placeholder="Notas adicionales" type="textarea" name="notes"
+                    formControlName="notes"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="row d-flex justify-content-center align-items-center flex-grow-1">
+            <button mat-raised-button [color]="themeColor" [mat-dialog-close]
+                class="mr-4 on-hover-box-shadow">Cancelar</button>
+            <button mat-raised-button [color]="themeColor" class="on-hover-box-shadow d-flex justify-content-center"
+                (click)="submitForm()" [disabled]="!proposalForm.valid && !isSubmitting">
+                <span *ngIf="!isSubmitting">Solicitar</span>
+                <mat-spinner class="py-2" color="accent" diameter="20" *ngIf="isSubmitting"></mat-spinner>
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,26 @@
+<mat-accordion *ngIf="url.includes('inicio')">
+    <mat-expansion-panel *ngFor="let activeFaq of activeFaqs" [expanded]=[panelOpenState]>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{activeFaq.text}}
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div>
+            {{activeFaq.faqBody}}
+        </div>
+        <div class="text-center">
+            <a href="{{activeFaq.href}}">
+                <button mat-raised-button class="on-hover-box-shadow mt-2" color="primary">Ver más información</button>
+            </a>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>
+
+<ngb-carousel class="outline h-100" *ngIf="!url.includes('inicio')" interval="0">
+    <ng-template ngbSlide *ngFor="let slide of carousel">
+        <img src="assets/images/faqs/{{slide.image}}" class="d-block mx-auto">
+        <div class="carousel-caption">
+            <p>{{slide.description}}</p>
+        </div>
+    </ng-template>
+</ngb-carousel>

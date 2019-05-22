@@ -1,0 +1,12 @@
+<mat-grid-list [cols]="breakpoint" rowHeight="2:1" (window:resize)="onResize($event)">
+    <mat-grid-tile *ngFor="let card of cards" [colspan]="1" [rowspan]="1">
+        <mat-card class="py-3 px-4 on-hover-box-shadow" routerLink="{{card.href}}">
+            <mat-card-content>
+                <div class="mat-card-icon-container d-flex align-items-center mr-3">
+                    <img src="assets/images/cards/{{card.name}}.png">
+                </div>
+                <div class="content d-flex align-items-center">{{card.text}}</div>
+            </mat-card-content>
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>

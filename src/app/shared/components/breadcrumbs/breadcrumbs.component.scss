@@ -1,0 +1,11 @@
+:host /deep/ {
+    .mat-icon {
+        vertical-align: middle;
+    }
+    a{
+        color:#333366;
+        &:hover{
+            text-decoration: none !important;
+        }
+    }
+}

@@ -1,0 +1,6 @@
+:host /deep/ {
+    .mat-dialog-content {
+        max-height: none !important;
+        height: calc(100% - 40px);
+    }
+}

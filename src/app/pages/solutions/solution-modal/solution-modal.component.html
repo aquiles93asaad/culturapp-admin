@@ -1,0 +1,93 @@
+<h1 mat-dialog-title class="text-center mb-3">Agregar solución</h1>
+<div mat-dialog-content>
+    <form [formGroup]="solutionForm" class="h-100 d-flex align-items-stretch flex-column">
+        <div class="row flex-fill">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Nombre" type="text" name="name" formControlName="name">
+                <mat-error *ngIf="!!f.name.errors">
+                    <span *ngIf="!!f.name.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Cantidad de Clases Documentales" type="number" name="documentClassesCount"
+                    formControlName="documentClassesCount">
+                <mat-error *ngIf="!!f.documentClassesCount.errors">
+                    <span *ngIf="!!f.documentClassesCount.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row flex-fill">
+            <mat-form-field class="col-12">
+                <textarea matInput placeholder="Descripción de la solución" type="textarea" name="description"
+                    formControlName="description"></textarea>
+                <mat-error *ngIf="!!f.description.errors">
+                    <span *ngIf="!!f.description.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row flex-fill">
+            <div class="col-12">Horas por tipo de empresa:</div>
+            <mat-form-field class="col-4">
+                <input matInput placeholder="Chica" type="number" name="hoursSmall"
+                    formControlName="hoursSmall">
+                <mat-error *ngIf="!!f.hoursSmall.errors">
+                    <span *ngIf="!!f.hoursSmall.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-4">
+                <input matInput placeholder="Mediana" type="number" name="hoursMedium"
+                    formControlName="hoursMedium">
+                <mat-error *ngIf="!!f.hoursMedium.errors">
+                    <span *ngIf="!!f.hoursMedium.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-4">
+                <input matInput placeholder="Grande" type="number" name="hoursBig"
+                    formControlName="hoursBig">
+                <mat-error *ngIf="!!f.hoursBig.errors">
+                    <span *ngIf="!!f.hoursBig.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row flex-fill">
+            <div class="col-12">Preguntas especificas para esta solución:</div>
+            <div formArrayName="questions" class="col-12 p-0">
+                <div class="col-12 p-0" *ngFor="let question of questionsFormGroup.controls; let i = index" [formGroupName]="i">
+                    <mat-form-field class="col-12 col-sm-7">
+                        <input matInput placeholder="Pregunta" type="text" name="label"
+                            formControlName="label">
+                    </mat-form-field>
+                    <mat-form-field class="col-12 col-sm-3">
+                        <mat-label>Tipo de respuesta</mat-label>
+                        <mat-select name="dataType" formControlName="dataType">
+                            <mat-option *ngFor="let type of questionTypes" [value]="type">{{type}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="col-2 d-inline-block text-center">
+                        <button mat-mini-fab class="on-hover-box-shadow" color="primary"
+                            matTooltip="Eliminar pregunta" matTooltipPosition="above"
+                            (click)="removeQuestion(i)">
+                            <mat-icon aria-label="action.label">clear</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <button mat-button type="button" color="primary" (click)="addQuestion()">Agregar pregunta</button>
+            </div>
+        </div>
+
+        <div class="row flex-fill justify-content-center">
+            <button mat-raised-button color="primary" [mat-dialog-close]
+                class="mr-3 on-hover-box-shadow">Cancelar</button>
+            <button mat-raised-button color="primary" class="on-hover-box-shadow d-flex justify-content-center" (click)="submitForm()"
+                [disabled]="!solutionForm.valid && !isSubmitting">
+                <span *ngIf="!isSubmitting">Finalizar</span>
+                <mat-spinner class="py-2" color="accent" diameter="20" *ngIf="isSubmitting"></mat-spinner>
+            </button>
+        </div>
+    </form>
+</div>

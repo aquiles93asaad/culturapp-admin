@@ -1,0 +1,1092 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Mean Application API",
+    "description": "Mean Application API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "/api/",
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "API for auth in the system"
+    },
+    {
+      "name": "Users",
+      "description": "API for users in the system"
+    },
+    {
+      "name": "Companies",
+      "description": "API for companies in the system"
+    },
+    {
+      "name": "Opportunities",
+      "description": "API for opportunities in the system"
+    },
+    {
+      "name": "Demos",
+      "description": "API for demos of opportunities in the system"
+    },
+    {
+      "name": "Proposals",
+      "description": "API for proposals of opportunities in the system"
+    },
+    {
+      "name": "Industries",
+      "description": "API for industries in the system"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Login to the system",
+        "parameters": [
+          {
+            "name": "login",
+            "in": "body",
+            "description": "User auth login details",
+            "schema": {
+              "type": "object",
+              "required": [
+                "email",
+                "password"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario logueado con token",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "object",
+                  "$ref": "#/definitions/User"
+                },
+                "token": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Register to the system and then logs the user",
+        "parameters": [
+          {
+            "name": "register",
+            "in": "body",
+            "description": "User auth registration details",
+            "schema": {
+              "type": "object",
+              "required": [
+                "user",
+                "company"
+              ],
+              "properties": {
+                "user": {
+                  "type": "object",
+                  "required": [
+                    "email",
+                    "name",
+                    "lastName",
+                    "documentId",
+                    "password"
+                  ],
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "uniqueItems": true
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    },
+                    "phoneNumber": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "company": {
+                  "type": "object",
+                  "required": [
+                    "name",
+                    "cuit"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "uniqueItems": true
+                    },
+                    "cuit": {
+                      "type": "string"
+                    },
+                    "phone": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "string"
+                    },
+                    "webSite": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "User is created then loggedin and has a valid token",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "object",
+                  "$ref": "#/definitions/User"
+                },
+                "token": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/check": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Checks if a user with the provided email or/and Identification number exists in the collection",
+        "parameters": [
+          {
+            "name": "exists",
+            "in": "body",
+            "description": "Checks user existence in user collection",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "documentId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns true or false weither the user exists or not",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/user/create": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Adds a user to the Users collection",
+        "parameters": [
+          {
+            "name": "create",
+            "in": "body",
+            "description": "User Added to Users collection",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "object",
+                  "$ref": "#/definitions/User"
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the user created with the id in the collection",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/user/get": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Get the users of the same company of the user, with optional filters",
+        "parameters": [
+          {
+            "name": "get",
+            "in": "body",
+            "description": "Finds users with the sent filters",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "filters": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "roles": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "profiles": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the user created with the id in the collection",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/user/update": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Adds a user to the Users collection",
+        "parameters": [
+          {
+            "name": "create",
+            "in": "body",
+            "description": "User Added to Users collection",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "object",
+                  "$ref": "#/definitions/User"
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the user created in the collection",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "object",
+                  "$ref": "#/definitions/User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/company/check": {
+      "post": {
+        "tags": [
+          "Companies"
+        ],
+        "description": "Checks if a company with the provided name or cuit exists in the collection",
+        "parameters": [
+          {
+            "name": "exists",
+            "in": "body",
+            "description": "Checks company existence in companies collection",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "cuit": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns true or false weither the company exists or not",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/company/create": {
+      "post": {
+        "tags": [
+          "Companies"
+        ],
+        "description": "Adds a company to the companies collection",
+        "parameters": [
+          {
+            "name": "create",
+            "in": "body",
+            "description": "Create a company document",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "company": {
+                  "type": "object",
+                  "$ref": "#/definitions/Company"
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Company is created and its data is returned",
+            "schema": {
+              "$ref": "#/definitions/Company"
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/company/get": {
+      "post": {
+        "tags": [
+          "Companies"
+        ],
+        "description": "Get the companies in the collection, with optional filters",
+        "parameters": [
+          {
+            "name": "get",
+            "in": "body",
+            "description": "Finds companies with the sent filters",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "filters": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "populateFields": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the companies matching the filters in the collection",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "companies": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Company"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/company/add-sales-channel": {
+      "post": {
+        "tags": [
+          "Companies"
+        ],
+        "description": "Creates new company as a sales channel of the company of the user doing the request",
+        "parameters": [
+          {
+            "name": "get",
+            "in": "body",
+            "description": "Creates new company as a sales channel of the company of the user doing the request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "company": {
+                  "type": "object",
+                  "$ref": "#/definitions/Company"
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the company created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "company": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Company"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/opportunity/create": {
+      "post": {
+        "tags": [
+          "Opportunities"
+        ],
+        "description": "Adds an opportunity to the opportunities collection",
+        "parameters": [
+          {
+            "name": "create",
+            "in": "body",
+            "description": "Create an opportunity document",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "opportunity": {
+                  "type": "object",
+                  "$ref": "#/definitions/Opportunity"
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Opportunity is created and its data is returned",
+            "schema": {
+              "$ref": "#/definitions/Opportunity"
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/opportunity/get": {
+      "post": {
+        "tags": [
+          "Opportunities"
+        ],
+        "description": "Get the opportunities in the collection, which the user sending the request has access to, with optional filters",
+        "parameters": [
+          {
+            "name": "get",
+            "in": "body",
+            "description": "Finds opportunities with the sent filters",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "filters": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "onlyUserOpportunities": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the opportunities matching the filters and which user has access to in the collection",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "opportunities": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Opportunity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/demo/create": {
+      "post": {
+        "tags": [
+          "Demos"
+        ],
+        "description": "Adds an demo to the demos collection",
+        "parameters": [
+          {
+            "name": "create",
+            "in": "body",
+            "description": "Create a demo document",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "demo": {
+                  "type": "object",
+                  "$ref": "#/definitions/Demo"
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Demo is created and its data is returned",
+            "schema": {
+              "$ref": "#/definitions/Demo"
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/demo/get": {
+      "post": {
+        "tags": [
+          "Demos"
+        ],
+        "description": "Get the demos in the collection, which the user sending the request has access to, with optional filters",
+        "parameters": [
+          {
+            "name": "get",
+            "in": "body",
+            "description": "Finds demos with the sent filters",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "filters": {
+                  "type": "object",
+                  "properties": {
+                    "opportunity": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the demos matching the filters and which user has access to in the collection",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "demos": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Demo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/industry/create": {
+      "post": {
+        "tags": [
+          "Industry"
+        ],
+        "description": "Adds an industry to the collection",
+        "parameters": [
+          {
+            "name": "create",
+            "in": "body",
+            "description": "Create an industry document",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "industry": {
+                  "type": "object",
+                  "$ref": "#/definitions/Industry"
+                }
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Industry is created and its data is returned",
+            "schema": {
+              "$ref": "#/definitions/Industry"
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Authorization": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "User": {
+      "required": [
+        "email",
+        "name",
+        "lastName",
+        "documentId",
+        "password"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "uniqueItems": true,
+          "readOnly": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "documentId": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "userCompany": {
+          "type": "string"
+        },
+        "supervisor": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "profiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "readOnly": true
+        },
+        "createdBy": {
+          "type": "string",
+          "readOnly": true
+        },
+        "modifiedAt": {
+          "type": "string",
+          "readOnly": true
+        },
+        "modifiedBy": {
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "Company": {
+      "required": [
+        "name",
+        "cuit"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "uniqueItem": true,
+          "readOnly": true
+        },
+        "name": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "cuit": {
+          "type": "string",
+          "uniqueItem": true
+        },
+        "phone": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "industry": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "employeesCount": {
+          "type": "number"
+        },
+        "anualBilling": {
+          "type": "number"
+        },
+        "hasStandard": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "branchesNumber": {
+          "type": "number"
+        },
+        "isClient": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "isSalesChannel": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "salesChannelOf": {
+          "type": "string"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "salesChannels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "readOnly": true
+        },
+        "createdBy": {
+          "type": "string",
+          "readOnly": true
+        },
+        "modifieddAt": {
+          "type": "string",
+          "readOnly": true
+        },
+        "modifiedBy": {
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "Opportunity": {
+      "required": [
+        "name",
+        "description",
+        "companyClient"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "uniqueItem": true,
+          "readOnly": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "companyClient": {
+          "type": "string"
+        },
+        "estimatedTotal": {
+          "type": "number"
+        },
+        "automation": {
+          "type": "boolean"
+        },
+        "docManager": {
+          "type": "boolean"
+        },
+        "digitization": {
+          "type": "boolean"
+        },
+        "hardware": {
+          "type": "boolean"
+        },
+        "demo": {
+          "type": "object",
+          "$ref": "#/definitions/Demo"
+        },
+        "proposal": {
+          "type": "object",
+          "$ref": "#/definitions/Demo"
+        },
+        "createdAt": {
+          "type": "string",
+          "readOnly": true
+        },
+        "createdBy": {
+          "type": "string",
+          "readOnly": true
+        },
+        "modifieddAt": {
+          "type": "string",
+          "readOnly": true
+        },
+        "modifiedBy": {
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "Demo": {
+      "required": [
+        "dmeoType"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "uniqueItem": true,
+          "readOnly": true
+        },
+        "opportunity": {
+          "type": "string",
+          "readOnly": true
+        },
+        "dmeoType": {
+          "type": "string"
+        },
+        "possibleDate_1": {
+          "type": "string"
+        },
+        "possibleDate_2": {
+          "type": "string"
+        },
+        "possibleDate_3": {
+          "type": "string"
+        },
+        "selectedDate": {
+          "type": "string"
+        },
+        "genericDemos": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "workflowFile": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "buffer"
+            },
+            "contentType": {
+              "type": "string"
+            }
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "readOnly": true
+        },
+        "createdBy": {
+          "type": "string",
+          "readOnly": true
+        },
+        "modifieddAt": {
+          "type": "string",
+          "readOnly": true
+        },
+        "modifiedBy": {
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    }
+  }
+}

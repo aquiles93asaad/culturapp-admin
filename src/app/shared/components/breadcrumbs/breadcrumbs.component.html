@@ -1,0 +1,8 @@
+<div class="w-100 mb-3">
+    <div  class="d-inline-block" *ngFor="let breadcrumb of breadcrumbs; last as isLast">
+        <a [routerLink]="[breadcrumb.href]" >
+            {{breadcrumb.text}}
+        </a>
+        <mat-icon *ngIf="!isLast">keyboard_arrow_right</mat-icon>
+    </div>
+</div>

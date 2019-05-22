@@ -1,0 +1,131 @@
+@import "src/styles";
+
+:host /deep/ {
+    header {
+        width: 100%;
+
+        .mat-toolbar {
+            height: 50px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 2;
+
+            > .mat-icon {
+                cursor: pointer;
+            }
+
+            .right-logo {
+                max-width: 25px;
+            }
+    
+            .logo {
+                background-image: url('../../../assets/images/logo.png');
+                width: 180px;
+                height: 40px;
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
+            
+            .themes-switcher {
+                align-items: center;
+                cursor: pointer;
+                //
+                border-radius: .5rem;
+    
+                &.primary {
+                    background-color: mat-color($my-theme-primary, 900);
+                }
+    
+                &.accent {
+                    background-color: mat-color($my-theme-accent, 900);
+                }
+            }
+    
+            .example-spacer {
+                flex: 1 1 auto;
+            }
+    
+            .links {
+                color: white;
+                font-family: 'Helvetica Neue', sans-serif;
+                font-size: 15px;
+                font-weight: initial;
+                letter-spacing: -1px;
+                line-height: 1;
+                text-align: center;
+                padding: 15px;
+    
+                &.side {
+                    padding: 0 14px;
+                }
+            }
+    
+            .mat-icon {
+                vertical-align: middle;
+                margin: 0 5px;
+            }
+    
+            a {
+                cursor: pointer;
+            }
+        }
+
+        .loader {
+            padding-top: 50px;
+        }
+    }
+
+    .mat-sidenav-container {
+        height: 100%;
+        padding-top: 50px;
+
+        &.loading {
+            height: calc(100% - 55px);
+            padding-top: 0; 
+        }
+        
+        .mat-sidenav {
+            padding-top: 50px;
+
+            mat-list-item {
+                height: 50px;
+                outline: none;
+                color: white;
+                
+                .mat-list-text {
+                    order: 2;
+                }
+
+                .mat-list-item-content {
+                    img {
+                        display: flex;
+                        max-width: 30px;
+
+                        &.hover {
+                            display: none;
+                        }
+                    }
+                }
+
+                &:hover {
+                    .mat-list-item-content {
+                        img.hover {
+                            display: flex;
+                        }
+    
+                        img.normal {
+                            display: none;
+                        }
+                    }
+
+                    cursor: pointer;
+                    opacity: 0.7;
+                    background: white;
+                    color: color(blue);
+                }
+            }
+        }
+    }
+}

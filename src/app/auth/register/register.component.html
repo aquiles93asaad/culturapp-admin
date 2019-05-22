@@ -1,0 +1,140 @@
+<div class="container-fluid py-4 px-5 background-newuser h-100 image-bg">
+    <mat-card class="w-100 h-100 px-5 py-5 bg-color-opacity">
+        <mat-card-content class="d-flex h-100" style="flex-direction:column;">
+            <div class="position-absolute back">
+                <i class="material-icons align-middle" (click)="stepBack()" style="cursor: pointer">arrow_back_ios</i>
+                <div class="back-line d-inline-block align-middle mr-3"></div>
+                <div class="d-inline-block align-middle bl-black">
+                    <span class="title d-block ml-2">{{title}}</span>
+                    <span class="subtitle d-block ml-2">{{subtitle}}</span>
+                </div>
+            </div>
+            <mat-progress-bar class="w-50 mx-auto" mode="determinate" value="{{step}}"></mat-progress-bar>
+            <div class="form-container w-100 d-flex align-items-center flex-grow-1">
+                <form class="w-50 mx-auto" id="firstForm" [formGroup]="firstForm" (ngSubmit)="sumbitFistForm()"
+                    *ngIf="step == 50">
+                    <!-- name -->
+                    <mat-form-field class="d-block">
+                        <input matInput placeholder="Razón social *" class="f-dark" formControlName="name">
+                        <mat-error *ngIf="!!f1.name.errors">
+                            <span *ngIf="!!f1.name.errors.required">Campo obligatorio</span>
+                            <span *ngIf="!!f1.name.errors.companyExists">Razón social y/o CUIT no
+                                disponible</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- cuit -->
+                    <mat-form-field class="d-block">
+                        <input matInput placeholder="CUIT *" class="f-dark" formControlName="cuit">
+                        <mat-error *ngIf="!!f1.cuit.errors">
+                            <span *ngIf="!!f1.cuit.errors.required">Campo obligatorio</span>
+                            <span *ngIf="!f1.cuit.errors.required && !!f1.cuit.errors.minlength">El CUIT debe
+                                tener 11 números</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- phone -->
+                    <mat-form-field class="d-block">
+                        <input matInput placeholder="Teléfono" class="f-dark" formControlName="phone">
+                    </mat-form-field>
+
+                    <!-- direction -->
+                    <mat-form-field class="d-block">
+                        <input matInput placeholder="Dirección" class="f-dark" formControlName="address">
+                    </mat-form-field>
+
+                    <!-- website -->
+                    <mat-form-field class="d-block">
+                        <input matInput placeholder="Sitio web" class="f-dark" formControlName="website">
+                    </mat-form-field>
+
+                    <div>
+                        <div class="mb-2">Cantidad de empleados:</div>
+                        <mat-button-toggle-group #group="matButtonToggleGroup" formControlName="quantity" ngDefaultControl>
+                            <mat-button-toggle class="mr-3 on-hover-box-shadow" value="small">
+                                1 - 50
+                            </mat-button-toggle>
+                            <mat-button-toggle class="mr-3 on-hover-box-shadow" value="medium">
+                                50 - 200
+                            </mat-button-toggle>
+                            <mat-button-toggle class="mr-3 on-hover-box-shadow" value="big">
+                                200 +
+                            </mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </div>
+                    <button mat-raised-button [color]="themeColor" class="d-flex justify-content-center w-25 mx-auto mt-4 on-hover-box-shadow"
+                        form="firstForm" type="submit" [disabled]="!firstForm.valid && !isSubmitting" [ngClass]="{ 'py-2': isSubmitting }">
+                        <span *ngIf="!isSubmitting">Siguiente</span>
+                        <mat-spinner class="py-2" color="accent" diameter="30" *ngIf="isSubmitting"></mat-spinner>
+                    </button>
+                </form>
+                <form class="w-50 mx-auto" id="secondForm" [formGroup]="secondForm" (ngSubmit)="sumbitSecondForm()" *ngIf="step == 100">
+                    <!-- email -->
+                    <mat-form-field class="d-block">
+                        <input matInput placeholder="Email *" class="f-dark" formControlName="email">
+                    </mat-form-field>
+
+                    <div formGroupName="passwords">
+                        <!-- password -->
+                        <mat-form-field class="d-block">
+                            <input matInput type="password" placeholder="Contraseña *" class="f-dark"
+                                formControlName="password">
+                            <mat-error *ngIf="!!passwords.password.errors">
+                                <span *ngIf="!!passwords.password.errors.required">Campo obligatorio</span>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <!-- repeat password -->
+                        <mat-form-field class="d-block">
+                            <input matInput type="password" placeholder="Confirmar contraseña *" class="f-dark"
+                                formControlName="repeat">
+                            <mat-error *ngIf="!!passwords.repeat.errors">
+                                <span *ngIf="!!passwords.repeat.errors.required">Campo obligatorio</span>
+                                <span
+                                    *ngIf="!passwords.repeat.errors.required && !!passwords.repeat.errors.MatchFields">Las
+                                    contraseñas no coinciden</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- name -->
+                    <mat-form-field class="d-block">
+                        <input matInput placeholder="Nombre *" class="f-dark" formControlName="name">
+                        <mat-error *ngIf="!!f2.name.errors">
+                            <span *ngIf="!!f2.name.errors.required">Campo obligatorio</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- lastName -->
+                    <mat-form-field class="d-block">
+                        <input matInput placeholder="Apellido *" class="f-dark" formControlName="lastName">
+                        <mat-error *ngIf="!!f2.lastName.errors">
+                            <span *ngIf="!!f2.lastName.errors.required">Campo obligatorio</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- documentId -->
+                    <mat-form-field class="d-block">
+                        <input matInput placeholder="N° de documento *" class="f-dark" formControlName="documentId">
+                        <mat-error *ngIf="!!f2.documentId.errors">
+                            <span *ngIf="!!f2.documentId.errors.required">Campo obligatorio</span>
+                            <span *ngIf="!f2.documentId.errors.required && (!!f2.documentId.errors.minlength || !!f2.documentId.errors.maxlength)">El N° de
+                                documento debe tener 8 números</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- phone -->
+                    <mat-form-field class="d-block">
+                        <input matInput placeholder="Teléfono/Celular" class="f-dark" formControlName="phone">
+                    </mat-form-field>
+                    
+                    <button mat-raised-button [color]="themeColor" class="d-flex justify-content-center w-25 mx-auto mt-4 on-hover-box-shadow"
+                        form="secondForm" type="submit" [disabled]="!secondForm.valid && !isSubmitting" [ngClass]="{ 'py-2': isSubmitting }">
+                        <span *ngIf="!isSubmitting">Finalizar</span>
+                        <mat-spinner class="py-2" color="accent" diameter="30" *ngIf="isSubmitting"></mat-spinner>
+                    </button>
+                </form>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

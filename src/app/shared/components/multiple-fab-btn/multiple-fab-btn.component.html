@@ -1,0 +1,12 @@
+<div class="fab-container list-fab-btn">
+    <button mat-mini-fab class="fab-toggler mb-2" (click)="onToggleFab()" [color]="themeColor">
+        <i class="material-icons" [@fabToggler]="{value: fabTogglerState}">add</i>
+    </button>
+    <div [@speedDialStagger]="buttons.length">
+        <button mat-mini-fab *ngFor="let btn of buttons" class="mb-2 on-hover-box-shadow" [color]="themeColor"
+            matTooltip="{{btn.label}}" matTooltipPosition="right"
+            (click)="executeAction(btn.name)">
+            <mat-icon aria-label="btn.label">{{btn.icon}}</mat-icon>
+        </button>
+    </div>
+</div>

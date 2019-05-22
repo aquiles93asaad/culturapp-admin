@@ -1,0 +1,57 @@
+<h1 mat-dialog-title class="text-center mb-3">Desglose de la propuesta</h1>
+<div mat-dialog-content class="d-flex flex-column">
+    <mat-list class="w-100 mb-5">
+        <mat-list-item role="listitem" class="w-100">
+            <div class="col-4 d-inline-block">Item</div>
+            <div class="col-3 d-inline-block">Cantidad</div>
+            <div class="col-3 d-inline-block">Periodo</div>
+            <div class="col-2 d-inline-block">Total</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem" class="w-100">
+            <div class="col-4 d-inline-block">Lic. Captika</div>
+            <div class="col-3 d-inline-block">{{proposal.newCkLicenses}}</div>
+            <div class="col-3 d-inline-block">Única</div>
+            <div class="col-2 d-inline-block">{{breakdown.totalCkLicenses}}</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem" class="w-100">
+            <div class="col-4 d-inline-block">Lic. Thuban</div>
+            <div class="col-3 d-inline-block">{{proposal.newThLicenses}}</div>
+            <div class="col-3 d-inline-block">Única</div>
+            <div class="col-2 d-inline-block">{{breakdown.totalThLicenses}}</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem" class="w-100">
+            <div class="col-4 d-inline-block">Mantenimiento lic. Captika</div>
+            <div class="col-3 d-inline-block">{{proposal.newCkLicenses}}</div>
+            <div class="col-3 d-inline-block">Por año</div>
+            <div class="col-2 d-inline-block">{{breakdown.totalCkMaintenance}}</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem" class="w-100">
+            <div class="col-4 d-inline-block">Mantenimiento lic. Thuban</div>
+            <div class="col-3 d-inline-block">{{proposal.newThLicenses}}</div>
+            <div class="col-3 d-inline-block">Por año</div>
+            <div class="col-2 d-inline-block">{{breakdown.totalThMaintenance}}</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem" class="w-100">
+            <div class="col-4 d-inline-block">Horas</div>
+            <div class="col-3 d-inline-block">{{proposal.totalHours}}</div>
+            <div class="col-3 d-inline-block">Única</div>
+            <div class="col-2 d-inline-block">{{breakdown.totalHoursValue}}</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem" class="w-100">
+            <div class="col-4 d-inline-block"></div>
+            <div class="col-3 d-inline-block"></div>
+            <div class="col-3 d-inline-block"></div>
+            <div class="col-2 d-inline-block">{{proposal.estimatedTotal}}</div>
+        </mat-list-item>
+    </mat-list>
+    <div class="row d-flex justify-content-center align-items-center flex-grow-1">
+        <button mat-raised-button [color]="themeColor" [mat-dialog-close]
+            class="mr-4 on-hover-box-shadow">Cerrar</button>
+    </div>
+</div>

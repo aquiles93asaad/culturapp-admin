@@ -1,0 +1,22 @@
+<div class="pt-4 h-100">
+    <app-breadcrumbs [breadcrumbs]="breadcrumbs"></app-breadcrumbs>
+    <div class="position-relative">
+        <app-dynamic-filters 
+            [filters]="filters"
+            (parentActions)="clientsActions($event)"
+            class="w-100">
+        </app-dynamic-filters>
+        <button class="list-fab-btn on-hover-box-shadow" mat-mini-fab [color]="themeColor" matTooltip="Agregar cliente" matTooltipPosition="right" (click)="openCompanyDialog()">
+            <mat-icon>add</mat-icon>
+        </button>
+        <app-dynamic-table
+            [dataSource]="clients"
+            [multiCheck]="false"
+            [columnsArray]="columns"
+            [actions]="actions"
+            [showLoader]="showLoader"
+            (parentActions)="clientsActions($event)"
+            class="w-100 mb-5 d-flex justify-content-center align-items-center">
+        </app-dynamic-table>
+    </div>
+</div>
