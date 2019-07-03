@@ -2,11 +2,11 @@ const mongoose = require('mongoose'),
       Schema = mongoose.Schema;
 
 const UserSchema = new mongoose.Schema({
-    name: {
+    nombre: {
         type: String,
         required: true
     },
-    lastName: {
+    apellido: {
         type: String,
         required: true
     },
@@ -17,51 +17,31 @@ const UserSchema = new mongoose.Schema({
         // Regexp to validate emails with more strict rules as added in tests/users.js which also conforms mostly with RFC2822 guide lines
         match: [/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Please enter a valid email'],
     },
-    documentId: {
-        type: String,
+    dni: {
+        type: Number,
         unique: true,
         required: true
+    },
+    sexo: {
+        type: String
+    },
+    telefono: {
+        type: String
+    },
+    direccion: {
+        type: String
     },
     hashedPassword: {
         type: String,
         required: true
     },
-    phone: {
-        type: String
+    esProfesos: {
+        type: Boolean
     },
-    userCompany: {
-        type: Schema.Types.ObjectId,
-        ref: 'Company'
-    },
-    supervisor: {
-        type: Schema.ObjectId,
-        ref: 'User'
-    },
-    roles: {
-        type: [String],
-        required: true,
-        validate: v => v == null || v.length > 0
-    },
-    profiles: {
-        type: [String],
-        required: true,
-        validate: v => v == null || v.length > 0
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    createdBy: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    },
-    modifiedAt: {
-        type: Date
-    },
-    modifiedBy: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    },
+    cursosInscriptos: {
+        type: [Schema.Types.ObjectId],
+        ref: 'Curso'
+    }
 }, {
         versionKey: false
     });
