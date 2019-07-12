@@ -6,30 +6,27 @@ import { AuthGuard } from './auth/auth.guard';
 
 // Resolvers
 import {
-    ClientsResolver,
-    ConstantsResolver,
-    GenericDemosResolver,
     HomeResolver,
-    MyTeamResolver,
-    OpportunitiesListResolver,
-    SalesChannelsResolver,
-    SolutionsResolver,
-    IndustryResolver
+    AsistenciasResolver,
+    CentrosResolver,
+    CursosResolver,
+    MateriasResolver,
+    NotificacionsResolver,
+    UsersResolver,
+    ProfesoresResolver
 } from './core/resolvers';
 
-import {
+// Components
+import { 
     DashboardLayoutComponent,
-    ClientsComponent,
-    ConstantsComponent,
-    GenericDemosComponent,
     HomeComponent,
-    MyTeamComponent,
-    OpportunitiesListComponent,
-    ReportsComponent,
-    SaleOpportunityComponent,
-    SalesChannelsComponent,
-    SolutionsComponent,
-    IndustriesComponent
+    UsuariosComponent,
+    ProfesoresComponent,
+    CursosComponent,
+    MateriasComponent,
+    CentrosComponent,
+    NotificacionesComponent,
+    AsistenciasComponent
 } from './pages';
 
 const routes: Routes = [
@@ -46,30 +43,6 @@ const routes: Routes = [
                 pathMatch: 'full'
             },
             {
-                path: 'clientes',
-                component: ClientsComponent,
-                canActivate: [AuthGuard],
-                resolve: {
-                    clients: ClientsResolver
-                }
-            },
-            {
-                path: 'constantes',
-                component: ConstantsComponent,
-                canActivate: [AuthGuard],
-                resolve: {
-                    constants: ConstantsResolver
-                }
-            },
-            {
-                path: 'demos-genericas',
-                component: GenericDemosComponent,
-                canActivate: [AuthGuard],
-                resolve: {
-                    genericDemos: GenericDemosResolver
-                }
-            },
-            {
                 path: 'inicio',
                 component: HomeComponent,
                 canActivate: [AuthGuard],
@@ -78,61 +51,60 @@ const routes: Routes = [
                 }
             },
             {
-                path: 'mi-equipo',
-                component: MyTeamComponent,
+                path: 'usuarios',
+                component: UsuariosComponent,
                 canActivate: [AuthGuard],
                 resolve: {
-                    users: MyTeamResolver
+                    users: UsersResolver
                 }
             },
             {
-                path: 'oportunidades',
-                component: OpportunitiesListComponent,
+                path: 'materias',
+                component: MateriasComponent,
                 canActivate: [AuthGuard],
                 resolve: {
-                    opportunitiesList: OpportunitiesListResolver
+                    maetrias: MateriasResolver
                 }
             },
             {
-                path: 'reportes',
-                component: ReportsComponent,
+                path: 'centros',
+                component: CentrosComponent,
                 canActivate: [AuthGuard],
                 resolve: {
-                    opportunitiesList: OpportunitiesListResolver
-                }
-            },
-            {
-                path: 'oportunidad-de-venta',
-                component: SaleOpportunityComponent,
-                canActivate: [AuthGuard],
-                resolve: {
-                    companies: ClientsResolver
-                }
-            },
-            {
-                path: 'canales-de-venta',
-                component: SalesChannelsComponent,
-                canActivate: [AuthGuard],
-                resolve: {
-                    salesChannels: SalesChannelsResolver
+                    centros: CentrosResolver
                 }
             },
             
             {
-                path: 'soluciones',
-                component: SolutionsComponent,
+                path: 'profesores',
+                component: ProfesoresComponent,
                 canActivate: [AuthGuard],
                 resolve: {
-                    solutions: SolutionsResolver
+                    profesores: ProfesoresResolver
                 }
             },
-
             {
-                path: 'industrias',
-                component: IndustriesComponent,
+                path: 'cursos',
+                component: CursosComponent,
                 canActivate: [AuthGuard],
-                resolve:{
-                    industries: IndustryResolver
+                resolve: {
+                    cursos: CursosResolver
+                }
+            },
+            {
+                path: 'notificaciones',
+                component: NotificacionesComponent,
+                canActivate: [AuthGuard],
+                resolve: {
+                    notificaciones: NotificacionsResolver
+                }
+            },
+            {
+                path: 'asistencias',
+                component: AsistenciasComponent,
+                canActivate: [AuthGuard],
+                resolve: {
+                    asistencias: AsistenciasResolver
                 }
             },
         ]
@@ -150,15 +122,14 @@ const routes: Routes = [
     exports: [RouterModule],
     providers: [
         AuthGuard,
-        ClientsResolver,
-        ConstantsResolver,
-        GenericDemosResolver,
         HomeResolver,
-        OpportunitiesListResolver,
-        MyTeamResolver,
-        SalesChannelsResolver,
-        SolutionsResolver,
-        IndustryResolver
+        AsistenciasResolver,
+        CentrosResolver,
+        CursosResolver,
+        MateriasResolver,
+        NotificacionsResolver,
+        UsersResolver,
+        ProfesoresResolver
     ],
     declarations: []
 })

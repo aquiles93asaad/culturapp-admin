@@ -41,7 +41,7 @@
 <mat-sidenav-container (backdropClick)="sidenav.close(); (toggleHamburger) ? toggleHamburger = false : toggleHamburger = true;"
     *ngIf="!router.url.includes('login') && !router.url.includes('register') && !router.url.includes('new-user')" [ngClass]="{ 'loading': loading }">
 
-    <mat-sidenav #sidenav (keydown.escape)="sidenav.close()" disableClose [attr.color]="themeColor" autoFocus="false" width="320px">
+    <mat-sidenav #sidenav (keydown.escape)="sidenav.close()" disableClose [attr.color]="themeColor" autoFocus="false" width="420px">
         <mat-list>
             <mat-list-item [routerLink]="['/dashboard/inicio']" (click)="sidenav.close(); (toggleHamburger) ? toggleHamburger = false : toggleHamburger = true;">
                 <img src="assets/images/menu/home-white.png" class="order-1 align-self-center mr-3 normal">

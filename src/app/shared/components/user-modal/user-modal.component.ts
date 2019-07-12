@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { User } from '../../../core/models';
-import { UserService } from '../../../core/services';
+import { User, Centro } from '../../../core/models';
+import { UserService, CentroService } from '../../../core/services';
 import * as $ from 'jquery';
 
 @Component({
@@ -13,67 +13,40 @@ import * as $ from 'jquery';
     styleUrls: ['./user-modal.component.scss']
 })
 export class UserModalComponent implements OnInit {
-    themeColor: string = (localStorage.getItem('user_color')) ? localStorage.getItem('user_color') : 'primary';
     userForm: FormGroup;
     isSubmitting: boolean = false;
-    supervisors: User[];
-    inSalesChannel: boolean;
-    canChooseProfile = ((<any>window).user.userCompany.salesChannelOf) ? false : true;
-
-    profile = [
-        'ADMIN',
-        'COMERCIAL',
-    ];
-    role = [
-        'LIDER',
-        'SUPERVISOR',
-        'EMPLEADO'
-    ];
+    centros: Centro[];
 
     constructor(
-        private router: Router,
         public dialogRef: MatDialogRef<UserModalComponent>,
         private snackBar: MatSnackBar,
         private fb: FormBuilder,
         private userService: UserService,
-        @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+        private centroService: CentroService,
+        @Optional() @Inject(MAT_DIALOG_DATA) public user: any
     ) { }
 
     ngOnInit() {
-        const url = this.router.url.split('/');
-        if(url[url.length - 1] == 'canales-de-venta') {
-            this.inSalesChannel = true;
-        } else {
-            this.inSalesChannel = false;
-        }
-
-        // In my-team page, must get users data as only their IDS are available
-        if(!this.inSalesChannel) {
-            const filters = {
-                _id: { "$in" : this.data.company.users },
-                roles: ['SUPERVISOR']
+        this.centroService.get()
+        .subscribe(
+            centros => {
+                this.centros = centros;
+            },
+            error => {
+                console.log(error);
             }
-
-            this.userService.get(filters)
-            .subscribe(
-                users => {
-                    this.supervisors = users;
-                }
-            );
-        } else {
-            // In sales-channels page, must filter users
-            this.supervisors = this.getSupervisors();
-        }
+        )
 
         this.userForm = this.fb.group({
-            name: [(this.data.user) ? this.data.user.name : ''],
-            lastName: [(this.data.user) ? this.data.user.lastName : ''],
-            email: [(this.data.user) ? this.data.user.email : '' , Validators.email],
-            documentId: [(this.data.user) ? this.data.user.documentId : ''],
-            profiles : [(this.data.user) ? this.data.user.profiles : ''],
-            roles : [(this.data.user) ? this.data.user.roles : ''],
-            phone: [(this.data.user) ? this.data.user.phone : ''],
-            supervisor: [(this.data.user && this.data.user.supervisor) ? this.data.user.supervisor._id : null]
+            nombre: [(this.user) ? this.user.nombre : ''],
+            apellido: [(this.user) ? this.user.apellido : ''],
+            email: [(this.user) ? this.user.email : '' , Validators.email],
+            dni: [(this.user) ? this.user.dni : ''],
+            telefono: [(this.user) ? this.user.telefono : ''],
+            sexo: [(this.user) ? this.user.sexo : ''],
+            direccion: [(this.user) ? this.user.direccion : ''],
+            rol: [(this.user) ? (this.user.esAdmin) ? '1' : (this.user.esSuperAdmin) ? '2' : '' : ''],
+            centroAdmin: [(this.user) ? (this.user.centroAdmin) ? this.user.centroAdmin._id : '' : ''],
         });
     }
 
@@ -85,13 +58,9 @@ export class UserModalComponent implements OnInit {
 
     submitForm() {
         if(this.userForm.valid) {
-            if(!this.data.user){
+            if(!this.user){
                 this.isSubmitting = true;
                 let user: User = this.userForm.value;
-                if(this.inSalesChannel || !this.canChooseProfile) {
-                    user.userCompany = this.data.company._id;
-                    user.profiles = ['COMERCIAL'];
-                }
                 user.email = user.email.toLowerCase();
                 this.userService.create(user)
                 .subscribe(
@@ -105,8 +74,8 @@ export class UserModalComponent implements OnInit {
             } else {
                 if(this.dataChanged()) {
                     this.isSubmitting = true;
-                    this.data.user.email = this.data.user.email.toLowerCase();
-                    this.userService.update(this.data.user)
+                    this.user.email = this.user.email.toLowerCase();
+                    this.userService.update(this.user)
                     .subscribe(
                         user => {
                             this.dialogRef.close(user);
@@ -130,30 +99,30 @@ export class UserModalComponent implements OnInit {
         this.dialogRef.close();
     }
 
-    private getSupervisors() {
-        let result = [];
-        for (let i = 0; i < this.data.company.users.length; i++) {
-            if(this.hasCommonElement(this.data.company.users[i].roles, ['SUPERVISOR', 'LIDER'])) {
-                result.push(this.data.company.users[i]);
-            }
-        }
-        return result;
-    }
+    // private getSupervisors() {
+    //     let result = [];
+    //     for (let i = 0; i < this.user.company.users.length; i++) {
+    //         if(this.hasCommonElement(this.user.company.users[i].roles, ['SUPERVISOR', 'LIDER'])) {
+    //             result.push(this.user.company.users[i]);
+    //         }
+    //     }
+    //     return result;
+    // }
 
-    private hasCommonElement(arr1, arr2) {
-        var bExists = false;
-        $.each(arr2, function(index, value){
+    // private hasCommonElement(arr1, arr2) {
+    //     var bExists = false;
+    //     $.each(arr2, function(index, value){
 
-            if($.inArray(value,arr1)!=-1){
-                bExists = true;
-            }
+    //         if($.inArray(value,arr1)!=-1){
+    //             bExists = true;
+    //         }
 
-            if(bExists){
-                return false;
-            }
-        });
-        return bExists;
-    }
+    //         if(bExists){
+    //             return false;
+    //         }
+    //     });
+    //     return bExists;
+    // }
 
     private dataChanged(): boolean {
         let result = false;
@@ -161,16 +130,12 @@ export class UserModalComponent implements OnInit {
         for (const control in controls) {
             if (controls.hasOwnProperty(control)) {
                 let doChange = false;
-                if((this.data.user[control] != controls[control].value)) {
+                if((this.user[control] != controls[control].value)) {
                     doChange = true;
-
-                    if(control == 'supervisor' && controls[control].value == '') {
-                        doChange = false;
-                    }
                 }
 
                 if(doChange) {
-                    this.data.user[control] = controls[control].value;
+                    this.user[control] = controls[control].value;
                     result = true;
                 }
             }

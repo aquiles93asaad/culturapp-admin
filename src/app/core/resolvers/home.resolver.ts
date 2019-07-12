@@ -16,9 +16,9 @@ export class HomeResolver implements Resolve<Card[]> {
     resolve(): Observable<Card[]> {
         let user = (<any>window).user;
         if(user) {
-            return this.cardsService.getUserAvailableCards(user.profiles, user.roles, user.userCompany);
+            return this.cardsService.getUserAvailableCards(user.esSuperAdmin);
         } else {
-            return this.cardsService.getUserAvailableCards(null, null, null);
+            return this.cardsService.getUserAvailableCards();
         }
     }
 

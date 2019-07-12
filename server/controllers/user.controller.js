@@ -1,12 +1,10 @@
 const bcrypt = require('bcrypt');
-const User = require('../models/user.model');
-const Company = require('../models/company.model');
-const companyCtrl = require('./company.controller');
+const Usuario = require('../models/usuario.model');
 const _ = require('lodash');
 
 async function check(userEmail, userDocId) {
     try {
-        const user = await User.findOne({
+        const user = await Usuario.findOne({
             $or: [
                 { email: userEmail },
                 { documentId: userDocId}
@@ -23,60 +21,55 @@ async function check(userEmail, userDocId) {
     }
 }
 
-async function create(user, reqUserCompany) {
+async function create(user) {
     try {
-        if(!user.userCompany)
-            user['userCompany'] = reqUserCompany;
-
         if(!user.password)
             user['password'] = 'cloudesk';
         
         user.hashedPassword = bcrypt.hashSync(user.password, 10);
         delete user.password;
-        const createdUser = await User(user).save();
-        await companyCtrl.addUser(createdUser);
-        return createdUser;
+        const createdUsuario = await Usuario(user).save();
+        return createdUsuario;
     } catch(error) {
         console.log(error);
         return error;
     }
 }
 
-async function get(reqUser, filters) {
+async function get(reqUsuario, filters) {
     try {
         if(typeof filters === 'undefined') {
             filters = {};
         }
         
         // This finds users with filters received, unselecting the hashedPassword from all found users
-        if(typeof filters.profiles !== 'undefined') {
-            filters.profiles = { $in : filters.profiles };
-        }
+        // if(typeof filters.profiles !== 'undefined') {
+        //     filters.profiles = { $in : filters.profiles };
+        // }
 
-        if(typeof filters.roles !== 'undefined') {
-            filters.roles = { $in : filters.roles };
-        }
+        // if(typeof filters.roles !== 'undefined') {
+        //     filters.roles = { $in : filters.roles };
+        // }
 
-        if(typeof filters._id === 'undefined') {
-            filters['_id'] = { $ne: reqUser._id };
-        } else {
-            filters['_id']['$ne'] = reqUser._id;
-        }
+        // if(typeof filters._id === 'undefined') {
+        //     filters['_id'] = { $ne: reqUsuario._id };
+        // } else {
+        //     filters['_id']['$ne'] = reqUsuario._id;
+        // }
 
-        if (_.indexOf(reqUser.roles, 'SUPERVISOR') !== -1) {
-            filters['_id']['$in'] = await User.find(
-                { supervisor: reqUser._id },
-                '_id'
-            )
-        }
+        // if (_.indexOf(reqUsuario.roles, 'SUPERVISOR') !== -1) {
+        //     filters['_id']['$in'] = await Usuario.find(
+        //         { supervisor: reqUsuario._id },
+        //         '_id'
+        //     )
+        // }
 
-        const users = await User.find(
+        console.log(filters);
+
+        const users = await Usuario.find(
             filters,
             '-hashedPassword'
-        ).populate({ path: 'supervisor', model: User })
-        .populate({ path: 'userCompany', model: Company })
-        .populate({ path: 'createdBy', model: User, select: 'name lastName' })
-        .populate({ path: 'modifiedBy', model: User, select: 'name lastName' });
+        );
 
         return users;
     } catch(error) {
@@ -92,7 +85,7 @@ async function update(userData) {
             delete userData.password
         }
         
-        const user = await User.findOneAndUpdate(
+        const user = await Usuario.findOneAndUpdate(
             { _id: userData._id },
             userData,
             { new: true }

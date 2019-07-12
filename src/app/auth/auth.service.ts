@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { map } from 'rxjs/operators'
 
 import { TokenStorage } from './token.storage';
-import { User, Company } from '../core/models';
+import { User } from '../core/models';
 
 @Injectable()
 export class AuthService {
@@ -41,11 +41,10 @@ export class AuthService {
         )
     }
 
-    register(user: User, company: Company): Observable<any> {
+    register(user: User): Observable<any> {
         return Observable.create(observer => {
             this.http.post('/api/auth/register', {
-                user,
-                company
+                user
             }).subscribe((data: any) => {
                 observer.next({ user: data.user });
                 this.setUser(data.user);

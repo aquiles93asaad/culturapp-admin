@@ -11,7 +11,6 @@ import {
     BreadcrumbsComponent,
     MultipleFabBtnComponent,
     UserModalComponent,
-    CompanyModalComponent,
     ConfirmDeleteModalComponent
 } from './components';
 import { BooelanTextValuePipe, EnumTextValuePipe } from './pipes';
@@ -23,7 +22,6 @@ import { BooelanTextValuePipe, EnumTextValuePipe } from './pipes';
         BreadcrumbsComponent,
         MultipleFabBtnComponent,
         UserModalComponent,
-        CompanyModalComponent,
         ConfirmDeleteModalComponent,
         BooelanTextValuePipe,
         EnumTextValuePipe
@@ -47,13 +45,11 @@ import { BooelanTextValuePipe, EnumTextValuePipe } from './pipes';
         BreadcrumbsComponent,
         MultipleFabBtnComponent,
         UserModalComponent,
-        CompanyModalComponent,
         ConfirmDeleteModalComponent,
         NgxEchartsModule
     ],
     entryComponents: [
         UserModalComponent,
-        CompanyModalComponent,
         ConfirmDeleteModalComponent
     ],
 })

@@ -1,17 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
+import { 
     AvailableCardsService,
-    CompanyService,
-    ConstantsService,
-    GenericDemoService,
-    OpportunityDemoService,
-    OpportunityProposalService,
-    OpportunityService,
-    SolutionService,
     UserService,
-    IndustryService
-} from './services'
+    AsistenciaService,
+    CentroService,
+    CursoService,
+    MateriaService,
+    NotificacionService
+ } from './services'
 import { LoaderService } from './loader/loader.service';
 import { LoaderComponent } from './loader/loader.component';
 
@@ -21,16 +18,13 @@ import { LoaderComponent } from './loader/loader.component';
     ],
     providers: [
         AvailableCardsService,
-        CompanyService,
-        ConstantsService,
-        GenericDemoService,
-        OpportunityDemoService,
-        OpportunityProposalService,
-        OpportunityService,
-        SolutionService,
         UserService,
-        IndustryService,
-        LoaderService
+        LoaderService,
+        AsistenciaService,
+        CentroService,
+        CursoService,
+        MateriaService,
+        NotificacionService
     ],
     declarations: [
         LoaderComponent

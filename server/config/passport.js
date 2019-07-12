@@ -4,17 +4,17 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const bcrypt = require('bcrypt');
 
-const User = require('../models/user.model');
-const Company = require('../models/company.model');
+const User = require('../models/usuario.model');
 const config = require('./config');
 
 const localLogin = new LocalStrategy({
     usernameField: 'email'
 }, async (email, password, done) => {
-    let user = await User.findOne({ email }).populate({ path: 'userCompany', model: Company, populate: [{ path: 'salesChannelOf', Model: Company, select: 'salesChannelOf salesChannels' }, { path: 'salesChannels', Model: Company, select: 'salesChannelOf salesChannels' }] });
+    let user = await User.findOne({ email });
     if (!user) {
         return done(null, null, { errorMessage: "Usuario o email inexistente", errorType: 'invalid-user' });
     }
+    console.log(user);
 
     if (!bcrypt.compareSync(password, user.hashedPassword)) {
         return done(null, null, { errorMessage: "Contraseña incorrecta", errorType: 'invalid-password' });
@@ -29,7 +29,7 @@ const jwtLogin = new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: config.jwtSecret
 }, async (payload, done) => {
-    let user = await User.findById(payload._id).populate({ path: 'userCompany', model: Company, populate: [{ path: 'salesChannelOf', Model: Company, select: 'salesChannelOf salesChannels' }, { path: 'salesChannels', Model: Company, select: 'salesChannelOf salesChannels' }] });
+    let user = await User.findById(payload._id);
 
     if (!user) {
         return done(null, false, { errorMessage: "Token inválido", errorType: 'invalid-token' });

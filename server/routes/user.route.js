@@ -21,7 +21,7 @@ async function check(req, res) {
 
 async function create(req, res) {
     req.body.user['createdBy'] = req.user._id;
-    const user = await userCtrl.create(req.body.user, req.user.userCompany);
+    const user = await userCtrl.create(req.body.user);
     res.json({ user });
 }
 

@@ -1,17 +1,19 @@
+import { Curso } from "./curso.model";
+import { Centro } from "./centro.model";
+
 export interface User {
     _id?: string;
     password?: string;
-    name: string;
-    lastName: string,
+    nombre: string;
+    apellido: string,
     email: string;
-    documentId: string,
-    phone: string,
-    userCompany: any,
-    roles: string[],
-    profiles: string[],
-    createdAt: Date,
-    createdBy: string,
-    modifiedAt: Date,
-    modifiedBy: string,
-    supervisor: string
+    dni: string,
+    telefono: string,
+    sexo: string,
+    direccion: string,
+    esProfesor: boolean,
+    esAdmin: boolean,
+    esSuperAdmin: boolean,
+    centroAdmin: Centro,
+    cursosInscriptos: Curso[]
 }

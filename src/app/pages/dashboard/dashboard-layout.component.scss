@@ -21,7 +21,7 @@
             }
     
             .logo {
-                background-image: url('../../../assets/images/logo.png');
+                background-image: url('../../../assets/images/logo-header.png');
                 width: 180px;
                 height: 40px;
                 background-size: contain;
@@ -88,6 +88,7 @@
         
         .mat-sidenav {
             padding-top: 50px;
+            width: 300px;
 
             mat-list-item {
                 height: 50px;

@@ -3,6 +3,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
@@ -18,57 +20,47 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthService } from './auth/auth.service';
 
 import {
-    ClientsComponent,
-    ConstantsModalComponent,
-    ConstantsComponent,
     DashboardLayoutComponent,
     FaqsComponent,
-    GenericDemoModalComponent,
-    GenericDemosComponent,
     HomeComponent,
-    IndustriesComponent,
-    IndustriesModalComponent,
-    MyTeamComponent,
-    OpportunitiesListComponent,
-    OpportunityAssignmentComponent,
-    OpportunityDemoComponent,
-    OpportunityProposalComponent,
-    OpportunityProposalBreakdownComponent,
-    OpportunityModalComponent,
-    ReportsComponent,
-    SaleOpportunityComponent,
-    SalesChannelsComponent,
-    SolutionsComponent,
-    SolutionModalComponent,
     UserProfileComponent,
+    UsuariosComponent,
+    ProfesoresComponent,
+    CursosComponent,
+    MateriasComponent,
+    CentrosComponent,
+    NotificacionesComponent,
+    AsistenciasComponent
 } from './pages';
+import { CentrosModalComponent } from './pages/centros/centros-modal/centros-modal.component';
+
+// See the Moment.js docs for the meaning of these formats:
+// https://momentjs.com/docs/#/displaying/format/
+export const MY_FORMATS = {
+    parse: {
+      dateInput: 'DD/MM/YYYY',
+    },
+    display: {
+        dateInput: 'DD/MM/YYYY',
+        monthYearLabel: 'MMM YYYY',
+    },
+};
 
 @NgModule({
     declarations: [
         AppComponent,
-        ClientsComponent,
-        ConstantsModalComponent,
-        ConstantsComponent,
         DashboardLayoutComponent,
         FaqsComponent,
-        GenericDemoModalComponent,
-        GenericDemosComponent,
         HomeComponent,
-        IndustriesComponent,
-        IndustriesModalComponent,
-        MyTeamComponent,
-        OpportunitiesListComponent,
-        OpportunityAssignmentComponent,
-        OpportunityDemoComponent,
-        OpportunityProposalComponent,
-        OpportunityProposalBreakdownComponent,
-        OpportunityModalComponent,
-        ReportsComponent,
-        SaleOpportunityComponent,
-        SalesChannelsComponent,
-        SolutionsComponent,
-        SolutionModalComponent,
         UserProfileComponent,
+        UsuariosComponent,
+        ProfesoresComponent,
+        CursosComponent,
+        MateriasComponent,
+        CentrosComponent,
+        NotificacionesComponent,
+        AsistenciasComponent,
+        CentrosModalComponent,
     ],
     imports: [
         BrowserModule,
@@ -91,20 +83,25 @@ import {
             provide: HTTP_INTERCEPTORS,
             useClass: CatchErrorInterceptor,
             multi: true,
-        }
+        },
+        {
+            provide: MAT_DATE_LOCALE,
+            useValue: 'es-AR'
+        },
+        {
+            provide: DateAdapter,
+            useClass: MomentDateAdapter,
+            deps: [MAT_DATE_LOCALE]
+        },
+        {
+            provide: MAT_DATE_FORMATS,
+            useValue: MY_FORMATS
+        },
     ],
     entryComponents: [
-        ConstantsModalComponent,
         FaqsComponent,
-        GenericDemoModalComponent,
-        IndustriesModalComponent,
-        OpportunityAssignmentComponent,
-        OpportunityDemoComponent,
-        OpportunityProposalBreakdownComponent,
-        OpportunityProposalComponent,
-        OpportunityModalComponent,
-        SolutionModalComponent,
         UserProfileComponent,
+        CentrosModalComponent
     ],
     bootstrap: [AppComponent]
 })

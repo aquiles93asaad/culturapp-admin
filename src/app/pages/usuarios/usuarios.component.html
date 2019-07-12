@@ -1,0 +1,24 @@
+<div class="pt-4 h-100">
+    <app-breadcrumbs [breadcrumbs]="breadcrumbs"></app-breadcrumbs>
+    <div class="position-relative">
+      <app-dynamic-filters 
+          [filters]="filters"
+          (parentActions)="usersActions($event)"
+          class="w-100">
+      </app-dynamic-filters>
+        <button class="list-fab-btn on-hover-box-shadow" mat-mini-fab color="primary" matTooltip="Nuevo Usuario" matTooltipPosition="right" (click)="openUserModal()">
+            <mat-icon>add</mat-icon>
+        </button>
+        <app-dynamic-table
+          [dataSource]="users"
+          [columnsArray]="columns"
+          [actions]="actions"
+          [multiCheck]="false"
+          [showLoader]="showLoader"
+          [hasDetail]="false"
+          (parentActions)="usersActions($event)"
+            class="w-100 mb-5 d-flex justify-content-center align-items-center">
+        </app-dynamic-table>
+    </div>
+  </div>
+  

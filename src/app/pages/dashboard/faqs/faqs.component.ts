@@ -71,7 +71,7 @@ export class FaqsComponent implements OnInit {
         }
 
         let user = (<any>window).user;
-        this.cardsService.getUserAvailableCards(user.profiles, user.roles, user.userCompany)
+        this.cardsService.getUserAvailableCards(user.esSuperAdmin)
         .subscribe(
             cards => {
                 for (let i = 0; i < cards.length; i++) {

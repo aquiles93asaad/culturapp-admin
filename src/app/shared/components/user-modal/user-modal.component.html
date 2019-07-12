@@ -1,19 +1,19 @@
-<h1 *ngIf="data.user == null" mat-dialog-title class="text-center mb-3">Agregar usuario a {{data.company.name}}</h1>
-<h1 *ngIf="data.user != null" mat-dialog-title class="text-center mb-3">Editar usuario de {{data.user.name}} {{data.user.lastName}}</h1>
+<h1 *ngIf="user == null" mat-dialog-title class="text-center mb-3">Crear un usuario admin</h1>
+<h1 *ngIf="user != null" mat-dialog-title class="text-center mb-3">Editar {{user.nombre}} {{user.apellido}}</h1>
 <div mat-dialog-content >
     <form [formGroup]="userForm" class="h-100 d-flex flex-column">
         <div class="row mb-3">
             <mat-form-field class="col-12 col-sm-6">
-                <input matInput placeholder="Nombre" type="text" name="name" formControlName="name" [required]="true">
-                <mat-error *ngIf="!!f.name.errors">
-                    <span *ngIf="!!f.name.errors.required">Este campo es obligatorio</span>
+                <input matInput placeholder="Nombre" type="text" name="nombre" formControlName="nombre" [required]="true">
+                <mat-error *ngIf="!!f.nombre.errors">
+                    <span *ngIf="!!f.nombre.errors.required">Este campo es obligatorio</span>
                 </mat-error>
             </mat-form-field>
 
             <mat-form-field class="col-12 col-sm-6">
-                <input matInput placeholder="Apellido" type="text" name="lastName" formControlName="lastName" [required]="true">
-                <mat-error *ngIf="!!f.lastName.errors">
-                    <span *ngIf="!!f.lastName.errors.required">Este campo es obligatorio</span>
+                <input matInput placeholder="Apellido" type="text" name="apellido" formControlName="apellido" [required]="true">
+                <mat-error *ngIf="!!f.apellido.errors">
+                    <span *ngIf="!!f.apellido.errors.required">Este campo es obligatorio</span>
                 </mat-error>
             </mat-form-field>
         </div>
@@ -28,44 +28,54 @@
             </mat-form-field>
 
             <mat-form-field class="col-12 col-sm-6">
-                <input matInput placeholder="DNI" type="text" name="documentId" formControlName="documentId" [required]="true">
-                <mat-error *ngIf="!!f.documentId.errors">
-                    <span *ngIf="!!f.documentId.errors.required">Este campo es obligatorio</span>
-                </mat-error>
-            </mat-form-field>
-        </div>
-
-        <div class="row mb-3">
-            <mat-form-field class="col-12 col-sm-6" *ngIf="!inSalesChannel && canChooseProfile">
-                <mat-label>Perfiles</mat-label>
-                <mat-select multiple name="profiles" formControlName="profiles" [required]="true">
-                    <mat-option *ngFor="let typeProfile of profile" [value]="typeProfile">{{typeProfile | titlecase}}</mat-option>
-                </mat-select>
-                <mat-error *ngIf="!!f.profiles.errors">
-                    <span *ngIf="!!f.profiles.errors.required">Este campo es obligatorio</span>
-                </mat-error>
-            </mat-form-field>
-
-            <mat-form-field class="col-12 col-sm-6">
-                <mat-label>Roles</mat-label>
-                <mat-select multiple name="roles" formControlName="roles" [required]="true">
-                    <mat-option *ngFor="let typeRole of role" [value]="typeRole">{{typeRole | titlecase}}</mat-option>
-                </mat-select>
-                <mat-error *ngIf="!!f.roles.errors">
-                    <span *ngIf="!!f.roles.errors.required">Este campo es obligatorio</span>
+                <input matInput placeholder="DNI" type="text" name="dni" formControlName="dni" [required]="true">
+                <mat-error *ngIf="!!f.dni.errors">
+                    <span *ngIf="!!f.dni.errors.required">Este campo es obligatorio</span>
                 </mat-error>
             </mat-form-field>
         </div>
 
         <div class="row mb-3">
             <mat-form-field class="col-12 col-sm-6">
-                <input matInput placeholder="Teléfono" type="text" name="phone" formControlName="phone">
+                <mat-label>Sexo</mat-label>
+                <mat-select name="sexo" formControlName="sexo" [required]="true">
+                    <mat-option value="Femenino">Femenino</mat-option>
+                    <mat-option value="Masculino">Masculino</mat-option>
+                    <mat-option value="Otro">Otro</mat-option>
+                </mat-select>
+                <mat-error *ngIf="!!f.sexo.errors">
+                    <span *ngIf="!!f.sexo.errors.required">Este campo es obligatorio</span>
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field class="col-12 col-sm-6">
-                <mat-label>Supervisor</mat-label>
-                <mat-select name="supervisor" formControlName="supervisor">
-                    <mat-option *ngFor="let user of supervisors" [value]="user._id">{{user.name}} {{user.lastName}}</mat-option>
+                <input matInput placeholder="Teléfono" type="text" name="telefono" formControlName="telefono">
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12">
+                <input matInput placeholder="Dirección" type="text" name="direccion" formControlName="direccion">
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <mat-label>Rol</mat-label>
+                <mat-select name="rol" formControlName="rol" [required]="true">
+                    <mat-option value="1">Administrador de un centro</mat-option>
+                    <mat-option value="2">Administrador de la plataforma</mat-option>
+                </mat-select>
+                <mat-error *ngIf="!!f.rol.errors">
+                    <span *ngIf="!!f.rol.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-6" *ngIf="userForm.get('rol').value == '1'">
+                <mat-select placeholder="Centro cultural del usuario" formControlName="centroAdmin" [required]="userForm.get('rol').value == '1'">
+                    <mat-option *ngFor="let centro of centros" [value]="centro._id + '|' + centro.nombre" >
+                        {{ centro.nombre }}
+                    </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -73,7 +83,7 @@
         <div class="row d-flex justify-content-center align-items-center flex-grow-1">
             <button mat-raised-button color="primary" [mat-dialog-close] class="mr-3 on-hover-box-shadow">Cancelar</button>
             <button mat-raised-button color="primary" class="on-hover-box-shadow d-flex justify-content-center" (click)="submitForm()" [disabled]="!userForm.valid && !isSubmitting">
-                <span *ngIf="!isSubmitting">Finalizar</span>
+                <span *ngIf="!isSubmitting">Crear</span>
                 <mat-spinner class="py-2" color="accent" diameter="20" *ngIf="isSubmitting"></mat-spinner>
             </button>
         </div>

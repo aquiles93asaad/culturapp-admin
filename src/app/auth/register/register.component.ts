@@ -4,10 +4,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { concatMap } from 'rxjs/operators';
 
-import { CompanyService, UserService } from '../../core/services';
+import { UserService } from '../../core/services';
 import { AuthService } from '../auth.service';
 
-import { Company, User } from '../../core/models';
+import { User } from '../../core/models';
 import { CustomValidators } from '../../shared/match-other.validator';
 
 @Component({
@@ -32,7 +32,6 @@ export class RegisterComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         public snackBar: MatSnackBar,
-        private companyService: CompanyService,
         private authService: AuthService,
         private userService: UserService
     ) { }
@@ -70,31 +69,30 @@ export class RegisterComponent implements OnInit {
     sumbitFistForm() {
         if(this.firstForm.valid) {
             this.isSubmitting = true;
-            this.companyService.check(this.firstForm.get('name').value, this.firstForm.get('cuit').value)
-            .subscribe(
-                data => {
-                    if(!data) {
-                        this.subtitle = 'Registro usuario';
-                        this.step = 100;
-                    } else {
-                        this.firstForm.get('name').setErrors({ companyExists: true });
-                    }
+            // this.companyService.check(this.firstForm.get('name').value, this.firstForm.get('cuit').value)
+            // .subscribe(
+            //     data => {
+            //         if(!data) {
+            //             this.subtitle = 'Registro usuario';
+            //             this.step = 100;
+            //         } else {
+            //             this.firstForm.get('name').setErrors({ companyExists: true });
+            //         }
                     
-                },
-                error => {
-                    console.log(error);
-                },
-                () => {
-                    this.isSubmitting = false;
-                }
-            )
+            //     },
+            //     error => {
+            //         console.log(error);
+            //     },
+            //     () => {
+            //         this.isSubmitting = false;
+            //     }
+            // )
         }
     }
 
     sumbitSecondForm() {
         if(this.secondForm.valid) {
             this.isSubmitting = true;
-            let company: Company = this.firstForm.value;
             let user: User = this.secondForm.value;
             this.processUserData(user);
             this.userService.check(user.email).pipe(
@@ -104,7 +102,7 @@ export class RegisterComponent implements OnInit {
                         return null;
                     }
     
-                    return this.authService.register(user, company)
+                    return this.authService.register(user)
                 } )
             ).subscribe(
                 data => {
