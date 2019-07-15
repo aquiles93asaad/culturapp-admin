@@ -1,0 +1,33 @@
+<h1 *ngIf="materia == null" mat-dialog-title class="text-center mb-3">Crear materia</h1>
+<h1 *ngIf="materia != null" mat-dialog-title class="text-center mb-3">Editar materia "{{materia.nombre}}"</h1>
+<div mat-dialog-content>
+    <form [formGroup]="materiaForm" class="h-100 d-flex flex-column">
+        <div class="row mb-3">
+            <mat-form-field class="col-12">
+                <input matInput placeholder="Nombre" type="text" name="nombre" formControlName="nombre" [required]="true">
+                <mat-error *ngIf="!!f.nombre.errors">
+                    <span *ngIf="!!f.nombre.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12">
+                <textarea matInput placeholder="Descripción breve de la materia" type="textarea" name="descripcion" formControlName="descripcion" [required]="true"></textarea>
+                <mat-error *ngIf="!!f.descripcion.errors">
+                    <span *ngIf="!!f.descripcion.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row d-flex justify-content-center align-items-center flex-grow-1">
+            <button mat-raised-button color="primary" [mat-dialog-close]
+                class="mr-4 on-hover-box-shadow">Cancelar</button>
+            <button mat-raised-button color="primary" class="on-hover-box-shadow d-flex justify-content-center"
+                (click)="submitForm()" [disabled]="!materiaForm.valid && !isSubmitting">
+                <span *ngIf="!isSubmitting">Guardar</span>
+                <mat-spinner class="py-2" color="accent" diameter="20" *ngIf="isSubmitting"></mat-spinner>
+            </button>
+        </div>
+    </form>
+</div>

@@ -71,9 +71,9 @@ export class CentrosComponent implements OnInit {
                 if(typeof result !== 'undefined') {
                     this.refresh({});
                     if(centro)
-                        this.showMessage('La industria fue modificada correctamente');
+                        this.showMessage('El centro modificada correctamente');
                     else
-                        this.showMessage('Una industria fue creada correctamente');
+                        this.showMessage('El centro fue creada correctamente');
                 }
         });
     }

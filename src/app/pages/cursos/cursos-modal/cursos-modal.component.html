@@ -1,0 +1,124 @@
+<h1 *ngIf="curso == null" mat-dialog-title class="text-center mb-3">Crear curso</h1>
+<h1 *ngIf="curso != null" mat-dialog-title class="text-center mb-3">Editar curso "{{curso.nombre}}"</h1>
+<div mat-dialog-content>
+    <form [formGroup]="cursoForm" class="h-100 d-flex flex-column">
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Nombre" type="text" name="nombre" formControlName="nombre" [required]="true">
+                <mat-error *ngIf="!!f.nombre.errors">
+                    <span *ngIf="!!f.nombre.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Nivel del curso" type="text" name="nivel" formControlName="nivel" [required]="true">
+                <mat-error *ngIf="!!f.nivel.errors">
+                    <span *ngIf="!!f.nivel.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <mat-label>Materia</mat-label>
+                <mat-select name="materia" formControlName="materia" [required]="true">
+                    <mat-option *ngFor="let materia of materias" [value]="materia._id" >
+                        {{ materia.nombre }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="!!f.materia.errors">
+                    <span *ngIf="!!f.materia.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-6">
+                <mat-select multiple placeholder="Profesores asignados al curso" formControlName="profesores" [required]="true">
+                    <mat-option *ngFor="let profesor of profesores" [value]="profesor._id" >
+                        {{profesor.nombre}} {{profesor.apellido}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="!!f.profesores.errors">
+                    <span *ngIf="!!f.profesores.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12">
+                <textarea matInput placeholder="Descripción breve del curso" type="textarea" name="descripcion" formControlName="descripcion" [required]="true"></textarea>
+                <mat-error *ngIf="!!f.descripcion.errors">
+                    <span *ngIf="!!f.descripcion.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput [matDatepicker]="fechaInicio" placeholder="Fecha inicial"
+                    formControlName="fechaInicio" [required]="true">
+                <mat-datepicker-toggle matSuffix [for]="fechaInicio"></mat-datepicker-toggle>
+                <mat-datepicker #fechaInicio></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput [matDatepicker]="fechaFin" placeholder="Fecha final"
+                    formControlName="fechaFin" [required]="true">
+                <mat-datepicker-toggle matSuffix [for]="fechaFin"></mat-datepicker-toggle>
+                <mat-datepicker #fechaFin></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <mat-label>Día</mat-label>
+                <mat-select name="dia" formControlName="dia" [required]="true">
+                    <mat-option value="lunes">Lunes</mat-option>
+                    <mat-option value="martes">Martes</mat-option>
+                    <mat-option value="miércoles">Miércoles</mat-option>
+                    <mat-option value="jueves">Jueves</mat-option>
+                    <mat-option value="viernes">Viernes</mat-option>
+                    <mat-option value="sábado">Sábado</mat-option>
+                    <mat-option value="domingo">Domingo</mat-option>
+                </mat-select>
+                <mat-error *ngIf="!!f.dia.errors">
+                    <span *ngIf="!!f.dia.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput type="time" placeholder="Horario" formControlName="horario"
+                    [required]="true">
+                <mat-error *ngIf="!!f.horario.errors">
+                    <span *ngIf="!!f.horario.errors.required">Campo obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Duración" type="number" name="duracion" formControlName="duracion" [required]="true">
+                <mat-error *ngIf="!!f.duracion.errors">
+                    <span *ngIf="!!f.duracion.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+                <mat-hint align="end">En horas</mat-hint>
+            </mat-form-field>
+            
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Precio" type="precio" name="precio" formControlName="precio" [required]="true">
+                <mat-error *ngIf="!!f.precio.errors">
+                    <span *ngIf="!!f.precio.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row d-flex justify-content-center align-items-center flex-grow-1">
+            <button mat-raised-button color="primary" [mat-dialog-close]
+                class="mr-4 on-hover-box-shadow">Cancelar</button>
+            <button mat-raised-button color="primary" class="on-hover-box-shadow d-flex justify-content-center"
+                (click)="submitForm()" [disabled]="!cursoForm.valid && !isSubmitting">
+                <span *ngIf="!isSubmitting">Guardar</span>
+                <mat-spinner class="py-2" color="accent" diameter="20" *ngIf="isSubmitting"></mat-spinner>
+            </button>
+        </div>
+    </form>
+</div>

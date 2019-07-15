@@ -1,11 +1,9 @@
 import { Component, OnInit, Inject, Optional } from '@angular/core';
-import { Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { User, Centro } from '../../../core/models';
+import { Centro } from '../../../core/models';
 import { UserService, CentroService } from '../../../core/services';
-import * as $ from 'jquery';
 
 @Component({
     selector: 'app-user-modal',
@@ -46,7 +44,7 @@ export class UserModalComponent implements OnInit {
             sexo: [(this.user) ? this.user.sexo : ''],
             direccion: [(this.user) ? this.user.direccion : ''],
             rol: [(this.user) ? (this.user.esAdmin) ? '1' : (this.user.esSuperAdmin) ? '2' : '' : ''],
-            centroAdmin: [(this.user) ? (this.user.centroAdmin) ? this.user.centroAdmin._id : '' : ''],
+            centro: [(this.user && this.user.centro) ? this.user.centro._id : ''],
         });
     }
 
@@ -60,7 +58,8 @@ export class UserModalComponent implements OnInit {
         if(this.userForm.valid) {
             if(!this.user){
                 this.isSubmitting = true;
-                let user: User = this.userForm.value;
+                let user = this.userForm.value;
+                (user.rol == '1') ? (user.esAdmin = true) : (user.esSuperAdmin = true);
                 user.email = user.email.toLowerCase();
                 this.userService.create(user)
                 .subscribe(
@@ -98,31 +97,6 @@ export class UserModalComponent implements OnInit {
     onNoClick(): void {
         this.dialogRef.close();
     }
-
-    // private getSupervisors() {
-    //     let result = [];
-    //     for (let i = 0; i < this.user.company.users.length; i++) {
-    //         if(this.hasCommonElement(this.user.company.users[i].roles, ['SUPERVISOR', 'LIDER'])) {
-    //             result.push(this.user.company.users[i]);
-    //         }
-    //     }
-    //     return result;
-    // }
-
-    // private hasCommonElement(arr1, arr2) {
-    //     var bExists = false;
-    //     $.each(arr2, function(index, value){
-
-    //         if($.inArray(value,arr1)!=-1){
-    //             bExists = true;
-    //         }
-
-    //         if(bExists){
-    //             return false;
-    //         }
-    //     });
-    //     return bExists;
-    // }
 
     private dataChanged(): boolean {
         let result = false;

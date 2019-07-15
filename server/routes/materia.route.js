@@ -23,7 +23,8 @@ async function create(req, res) {
 async function get(req, res) {
     let filters;
     (typeof req.body.filters === 'undefined') ? filters = {} : filters = req.body.filters;
-    const materias = await materiaCtrl.get(req.user, filters);
+    const materias = await materiaCtrl.get(filters);
+    console.log(materias);
     res.json({ materias });
 }
 

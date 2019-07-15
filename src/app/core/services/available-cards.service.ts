@@ -12,10 +12,10 @@ export class AvailableCardsService {
         { text: 'Usuarios', name: 'usuarios', onlySuperAdmin: true, roles: ['ALL'], href: '/dashboard/usuarios' },
         { text: 'Materias', name: 'materias', onlySuperAdmin: true, roles: ['ALL'], href: '/dashboard/materias' },
         { text: 'Centros', name: 'centros', onlySuperAdmin: true, roles: ['ALL'], href: '/dashboard/centros' },
-        { text: 'Profesores', name: 'profesores', onlySuperAdmin: false, roles: ['ALL'], href: '/dashboard/profesores' },
         { text: 'Cursos', name: 'cursos', onlySuperAdmin: false, roles: ['ALL'], href: '/dashboard/cursos' },
-        { text: 'Notificaciones', name: 'notificaciones', onlySuperAdmin: false, roles: ['ALL'], href: '/dashboard/notificaciones' },
+        { text: 'Profesores', name: 'profesores', onlySuperAdmin: false, roles: ['ALL'], href: '/dashboard/profesores' },
         { text: 'Asistencias', name: 'asistencias', onlySuperAdmin: false, roles: ['ALL'], href: '/dashboard/asistencias' },
+        // { text: 'Notificaciones', name: 'notificaciones', onlySuperAdmin: false, roles: ['ALL'], href: '/dashboard/notificaciones' },
     ];
 
     constructor(

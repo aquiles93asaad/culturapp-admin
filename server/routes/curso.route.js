@@ -15,7 +15,7 @@ router.route('/update').post(asyncHandler(update));
 module.exports = router;
 
 async function create(req, res) {
-    req.body.curso['createdBy'] = req.user._id;
+    req.body.curso['centro'] = req.user.centroAdmin._id;
     const curso = await cursoCtrl.create(req.body.curso);
     res.json({ curso });
 }
@@ -28,8 +28,6 @@ async function get(req, res) {
 }
 
 async function update(req, res) {
-    req.body.curso['modifiedAt'] = new Date();
-    req.body.curso['modifiedBy'] = req.user._id;
     const curso = await cursoCtrl.update(req.body.curso);
     res.json({ curso });
 }

@@ -24,7 +24,7 @@ async function check(userEmail, userDocId) {
 async function create(user) {
     try {
         if(!user.password)
-            user['password'] = 'cloudesk';
+            user['password'] = 'culturapp';
         
         user.hashedPassword = bcrypt.hashSync(user.password, 10);
         delete user.password;
@@ -41,30 +41,6 @@ async function get(reqUsuario, filters) {
         if(typeof filters === 'undefined') {
             filters = {};
         }
-        
-        // This finds users with filters received, unselecting the hashedPassword from all found users
-        // if(typeof filters.profiles !== 'undefined') {
-        //     filters.profiles = { $in : filters.profiles };
-        // }
-
-        // if(typeof filters.roles !== 'undefined') {
-        //     filters.roles = { $in : filters.roles };
-        // }
-
-        // if(typeof filters._id === 'undefined') {
-        //     filters['_id'] = { $ne: reqUsuario._id };
-        // } else {
-        //     filters['_id']['$ne'] = reqUsuario._id;
-        // }
-
-        // if (_.indexOf(reqUsuario.roles, 'SUPERVISOR') !== -1) {
-        //     filters['_id']['$in'] = await Usuario.find(
-        //         { supervisor: reqUsuario._id },
-        //         '_id'
-        //     )
-        // }
-
-        console.log(filters);
 
         const users = await Usuario.find(
             filters,

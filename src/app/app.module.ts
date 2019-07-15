@@ -30,9 +30,12 @@ import {
     MateriasComponent,
     CentrosComponent,
     NotificacionesComponent,
-    AsistenciasComponent
+    AsistenciasComponent,
+    CentrosModalComponent,
+    CursosModalComponent,
+    MateriasModalComponent,
+    ProfesoresModalComponent,
 } from './pages';
-import { CentrosModalComponent } from './pages/centros/centros-modal/centros-modal.component';
 
 // See the Moment.js docs for the meaning of these formats:
 // https://momentjs.com/docs/#/displaying/format/
@@ -61,6 +64,9 @@ export const MY_FORMATS = {
         NotificacionesComponent,
         AsistenciasComponent,
         CentrosModalComponent,
+        CursosModalComponent,
+        MateriasModalComponent,
+        ProfesoresModalComponent,
     ],
     imports: [
         BrowserModule,
@@ -101,7 +107,10 @@ export const MY_FORMATS = {
     entryComponents: [
         FaqsComponent,
         UserProfileComponent,
-        CentrosModalComponent
+        CentrosModalComponent,
+        CursosModalComponent,
+        MateriasModalComponent,
+        ProfesoresModalComponent
     ],
     bootstrap: [AppComponent]
 })

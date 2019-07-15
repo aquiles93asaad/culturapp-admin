@@ -8,12 +8,13 @@ export interface User {
     apellido: string,
     email: string;
     dni: string,
+    fechaNacimiento: Date,
     telefono: string,
     sexo: string,
     direccion: string,
     esProfesor: boolean,
     esAdmin: boolean,
     esSuperAdmin: boolean,
-    centroAdmin: Centro,
+    centro: Centro,
     cursosInscriptos: Curso[]
 }

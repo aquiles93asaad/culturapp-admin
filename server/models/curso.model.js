@@ -2,6 +2,13 @@ const mongoose = require('mongoose'),
       Schema = mongoose.Schema;
 
 const CursoSchema = new mongoose.Schema({
+    nombre: {
+        type: String,
+        required: true
+    },
+    descripcion: {
+        type: String,
+    },
     fechaInicio: {
         type: Date,
         required: true
@@ -11,22 +18,29 @@ const CursoSchema = new mongoose.Schema({
         required: true
     },
     duracion: {
-        type: String,
+        type: Number,
         required: true
     },
     precio: {
         type: Number,
         required: true,
     },
-    horario:{
-        type: [String],
-        required: true,
-        validate: v => v == null || v.length > 0
-    },
     dia: {
-        type: [String],
-        required: true,
-        validate: v => v == null || v.length > 0
+        type: String,
+        required: true
+        // validate: v => v == null || v.length > 0
+    },
+    horario: {
+        type: Date,
+        required: true
+        // validate: v => v == null || v.length > 0
+    },
+    nivel: {
+        type: String
+    },
+    centro: {
+        type: Schema.Types.ObjectId,
+        ref: 'Curso'
     },
     materia:{
         type: [Schema.Types.ObjectId],

@@ -63,7 +63,7 @@ const routes: Routes = [
                 component: MateriasComponent,
                 canActivate: [AuthGuard],
                 resolve: {
-                    maetrias: MateriasResolver
+                    materias: MateriasResolver
                 }
             },
             {

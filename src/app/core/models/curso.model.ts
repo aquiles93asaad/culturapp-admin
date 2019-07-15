@@ -4,12 +4,16 @@ import { Asistencia } from './asistencia.model';
 import { Notificacion } from './notificacion.model';
 
 export interface Curso {
+    _id?: string,
+    nombre: string,
+    descripcion: string,
     fechaInicio: Date,
     fechaFin: Date,
-    duracion: string,
+    duracion: number,
     precio: number,
-    horario: string[],
-    dia: string[],
+    dia: string,
+    horario: Date,
+    nivel: string,
     materia: Materia,
     users: User[],
     profesores: User[],

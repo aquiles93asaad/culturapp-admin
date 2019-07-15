@@ -5,12 +5,13 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 const bcrypt = require('bcrypt');
 
 const User = require('../models/usuario.model');
+const Centro = require('../models/centro.model');
 const config = require('./config');
 
 const localLogin = new LocalStrategy({
     usernameField: 'email'
 }, async (email, password, done) => {
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email }).populate({ path: 'centroAdmin', model: Centro });
     if (!user) {
         return done(null, null, { errorMessage: "Usuario o email inexistente", errorType: 'invalid-user' });
     }
@@ -29,7 +30,7 @@ const jwtLogin = new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: config.jwtSecret
 }, async (payload, done) => {
-    let user = await User.findById(payload._id);
+    let user = await User.findById(payload._id).populate({ path: 'centroAdmin', model: Centro });
 
     if (!user) {
         return done(null, false, { errorMessage: "Token inválido", errorType: 'invalid-token' });

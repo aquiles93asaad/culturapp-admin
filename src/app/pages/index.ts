@@ -9,3 +9,8 @@ export * from './materias/materias.component';
 export * from './notificaciones/notificaciones.component';
 export * from './profesores/profesores.component';
 export * from './usuarios/usuarios.component';
+
+export * from './centros/centros-modal/centros-modal.component';
+export * from './cursos/cursos-modal/cursos-modal.component';
+export * from './materias/materias-modal/materias-modal.component';
+export * from './profesores/profesores-modal/profesores-modal.component';

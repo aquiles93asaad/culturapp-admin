@@ -22,6 +22,9 @@ const UsuarioSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
+    fechaNacimiento: {
+        type: Date,
+    },
     sexo: {
         type: String
     },
@@ -41,7 +44,7 @@ const UsuarioSchema = new mongoose.Schema({
     esAdmin: {
         type: Boolean
     },
-    centroAdmin: {
+    centro: {
         type: Schema.Types.ObjectId,
         ref: 'Centro'
     },

@@ -29,7 +29,7 @@ export class UsuariosComponent implements OnInit {
 
 	breadcrumbs: Breadcrumb[] = [
         { text: 'Inicio', href: '/dashboard/inicio' },
-        { text: 'Usuarios', href: '/dashboard/industrias' }
+        { text: 'Usuarios', href: '/dashboard/usuarios' }
     ];
 
     filters: Filter[] = [
