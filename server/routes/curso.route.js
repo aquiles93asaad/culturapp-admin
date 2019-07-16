@@ -15,7 +15,7 @@ router.route('/update').post(asyncHandler(update));
 module.exports = router;
 
 async function create(req, res) {
-    req.body.curso['centro'] = req.user.centroAdmin._id;
+    req.body.curso['centro'] = req.user.centro._id;
     const curso = await cursoCtrl.create(req.body.curso);
     res.json({ curso });
 }

@@ -15,12 +15,11 @@ router.route('/update').post(asyncHandler(update));
 module.exports = router;
 
 async function check(req, res) {
-    const userExists = await userCtrl.check(req.body.email, req.body.documentId);
+    const userExists = await userCtrl.check(req.body.email, req.body.dni);
     res.send({ userExists });
 }
 
 async function create(req, res) {
-    req.body.user['createdBy'] = req.user._id;
     const user = await userCtrl.create(req.body.user);
     res.json({ user });
 }
@@ -33,8 +32,6 @@ async function get(req, res) {
 }
 
 async function update(req, res) {
-    req.body.user['modifiedAt'] = new Date();
-    req.body.user['modifiedBy'] = req.user._id;
     const user = await userCtrl.update(req.body.user);
     res.json({ user });
 }

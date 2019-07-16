@@ -15,7 +15,6 @@ router.route('/update').post(asyncHandler(update));
 module.exports = router;
 
 async function create(req, res) {
-    req.body.materia['createdBy'] = req.user._id;
     const materia = await materiaCtrl.create(req.body.materia);
     res.json({ materia });
 }
@@ -24,13 +23,10 @@ async function get(req, res) {
     let filters;
     (typeof req.body.filters === 'undefined') ? filters = {} : filters = req.body.filters;
     const materias = await materiaCtrl.get(filters);
-    console.log(materias);
     res.json({ materias });
 }
 
 async function update(req, res) {
-    req.body.materia['modifiedAt'] = new Date();
-    req.body.materia['modifiedBy'] = req.user._id;
     const materia = await materiaCtrl.update(req.body.materia);
     res.json({ materia });
 }

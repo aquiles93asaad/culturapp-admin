@@ -15,7 +15,6 @@ router.route('/update').post(asyncHandler(update));
 module.exports = router;
 
 async function create(req, res) {
-    req.body.asistencia['createdBy'] = req.user._id;
     const asistencia = await asistenciaCtrl.create(req.body.asistencia);
     res.json({ asistencia });
 }
@@ -28,8 +27,6 @@ async function get(req, res) {
 }
 
 async function update(req, res) {
-    req.body.asistencia['modifiedAt'] = new Date();
-    req.body.asistencia['modifiedBy'] = req.user._id;
     const asistencia = await asistenciaCtrl.update(req.body.asistencia);
     res.json({ asistencia });
 }

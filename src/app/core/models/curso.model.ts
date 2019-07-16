@@ -11,8 +11,11 @@ export interface Curso {
     fechaFin: Date,
     duracion: number,
     precio: number,
-    dia: string,
-    horario: Date,
+    diasYHorarios: [{
+        dia: string,
+        horario: string
+    }],
+    vacantes: number,
     nivel: string,
     materia: Materia,
     users: User[],

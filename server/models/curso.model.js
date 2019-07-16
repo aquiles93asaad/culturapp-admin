@@ -25,25 +25,22 @@ const CursoSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    dia: {
-        type: String,
-        required: true
-        // validate: v => v == null || v.length > 0
-    },
-    horario: {
-        type: Date,
-        required: true
-        // validate: v => v == null || v.length > 0
-    },
+    diasYHorarios: [{
+        dia: String,
+        horario: String
+    }],
     nivel: {
         type: String
+    },
+    vacantes: {
+        type: Number,
     },
     centro: {
         type: Schema.Types.ObjectId,
         ref: 'Curso'
     },
     materia:{
-        type: [Schema.Types.ObjectId],
+        type: Schema.Types.ObjectId,
         ref: 'Materia'
     },
     profesores: {
