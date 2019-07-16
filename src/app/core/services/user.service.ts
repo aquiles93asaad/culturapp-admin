@@ -11,11 +11,10 @@ export class UserService {
         private http: HttpClient
     ) { }
 
-    check(email: string): Observable<any> {
-        const documentId = "";
+    check(email: string, dni?: string): Observable<any> {
         return this.http.post('/api/user/check', {
             email,
-            documentId
+            dni
         }).pipe(
             map(
                 (data: any) => {
@@ -88,4 +87,19 @@ export class UserService {
             )
         );
     }
+
+    // createProfesor(user: User): Observable<any> {
+    //     return this.http.post('/api/user/createProfesor', {
+    //         user
+    //     }).pipe(
+    //         map(
+    //             (data: any) => {
+    //                 if(data.user)
+    //                     return data.user;
+                    
+    //                 throw new HttpErrorResponse({ status: 401, statusText: data.errorMessage, error: data.errorType });
+    //             }
+    //         )
+    //     );
+    // }
 }

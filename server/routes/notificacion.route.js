@@ -15,7 +15,6 @@ router.route('/update').post(asyncHandler(update));
 module.exports = router;
 
 async function create(req, res) {
-    req.body.notificacion['createdBy'] = req.user._id;
     const notificacion = await notificacionCtrl.create(req.body.notificacion);
     res.json({ notificacion });
 }
@@ -28,8 +27,6 @@ async function get(req, res) {
 }
 
 async function update(req, res) {
-    req.body.notificacion['modifiedAt'] = new Date();
-    req.body.notificacion['modifiedBy'] = req.user._id;
     const notificacion = await notificacionCtrl.update(req.body.notificacion);
     res.json({ notificacion });
 }

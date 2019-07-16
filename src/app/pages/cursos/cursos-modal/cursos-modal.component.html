@@ -20,7 +20,7 @@
 
         <div class="row mb-3">
             <mat-form-field class="col-12 col-sm-6">
-                <mat-label>Materia</mat-label>
+                <mat-label>Categoría/Tipo</mat-label>
                 <mat-select name="materia" formControlName="materia" [required]="true">
                     <mat-option *ngFor="let materia of materias" [value]="materia._id" >
                         {{ materia.nombre }}
@@ -55,42 +55,16 @@
         <div class="row mb-3">
             <mat-form-field class="col-12 col-sm-6">
                 <input matInput [matDatepicker]="fechaInicio" placeholder="Fecha inicial"
-                    formControlName="fechaInicio" [required]="true">
+                    formControlName="fechaInicio" [max]="cursoForm.get('fechaFin').value" [required]="true">
                 <mat-datepicker-toggle matSuffix [for]="fechaInicio"></mat-datepicker-toggle>
                 <mat-datepicker #fechaInicio></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field class="col-12 col-sm-6">
                 <input matInput [matDatepicker]="fechaFin" placeholder="Fecha final"
-                    formControlName="fechaFin" [required]="true">
+                    formControlName="fechaFin" [min]="cursoForm.get('fechaInicio').value" [required]="true">
                 <mat-datepicker-toggle matSuffix [for]="fechaFin"></mat-datepicker-toggle>
                 <mat-datepicker #fechaFin></mat-datepicker>
-            </mat-form-field>
-        </div>
-
-        <div class="row mb-3">
-            <mat-form-field class="col-12 col-sm-6">
-                <mat-label>Día</mat-label>
-                <mat-select name="dia" formControlName="dia" [required]="true">
-                    <mat-option value="lunes">Lunes</mat-option>
-                    <mat-option value="martes">Martes</mat-option>
-                    <mat-option value="miércoles">Miércoles</mat-option>
-                    <mat-option value="jueves">Jueves</mat-option>
-                    <mat-option value="viernes">Viernes</mat-option>
-                    <mat-option value="sábado">Sábado</mat-option>
-                    <mat-option value="domingo">Domingo</mat-option>
-                </mat-select>
-                <mat-error *ngIf="!!f.dia.errors">
-                    <span *ngIf="!!f.dia.errors.required">Este campo es obligatorio</span>
-                </mat-error>
-            </mat-form-field>
-            
-            <mat-form-field class="col-12 col-sm-6">
-                <input matInput type="time" placeholder="Horario" formControlName="horario"
-                    [required]="true">
-                <mat-error *ngIf="!!f.horario.errors">
-                    <span *ngIf="!!f.horario.errors.required">Campo obligatorio</span>
-                </mat-error>
             </mat-form-field>
         </div>
 
@@ -109,6 +83,33 @@
                     <span *ngIf="!!f.precio.errors.required">Este campo es obligatorio</span>
                 </mat-error>
             </mat-form-field>
+        </div>
+
+        <div class="row flex-fill mb-3">
+            <div class="col-12">Días y horarios del curso</div>
+            <div formArrayName="diasYHorarios" class="col-12 p-0">
+                <div class="col-12 p-0" *ngFor="let diaYHorario of diasYHorariosFormGroup.controls; let i = index; let first = first;" [formGroupName]="i">
+                    <mat-form-field class="col-12 col-sm-5">
+                        <mat-label>Día</mat-label>
+                        <mat-select name="dia" formControlName="dia">
+                            <mat-option *ngFor="let day of weekDays" [value]="day">{{day}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-12 col-sm-5">
+                        <input matInput type="time" placeholder="Horario" formControlName="horario">
+                    </mat-form-field>
+                    <div class="col-2 d-inline-block text-center" *ngIf="!first">
+                        <button mat-mini-fab class="on-hover-box-shadow" color="primary"
+                            matTooltip="Eliminar pregunta" matTooltipPosition="above"
+                            (click)="removeQuestion(i)">
+                            <mat-icon aria-label="action.label">clear</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <button mat-button type="button" color="primary" (click)="addQuestion()">Agregar otro día y horario</button>
+            </div>
         </div>
 
         <div class="row d-flex justify-content-center align-items-center flex-grow-1">

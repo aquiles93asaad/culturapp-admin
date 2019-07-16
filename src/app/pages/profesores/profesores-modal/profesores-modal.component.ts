@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { concatMap } from 'rxjs/operators';
 
 import { User } from '../../../core/models';
 import { UserService } from '../../../core/services';
@@ -47,13 +48,27 @@ export class ProfesoresModalComponent implements OnInit {
                 let profesor: User = this.profesorForm.value;
                 profesor.centro = (<any>window).user.centro;
                 profesor.email = profesor.email.toLowerCase();
-                this.userService.create(profesor)
-                .subscribe(
-                    newProfesor => {
+                profesor.esProfesor = true;
+                this.userService.check(profesor.email).pipe(
+                    concatMap( (userExists) => {
+                        if(userExists) {
+                            this.profesorForm.get('email').setErrors({ userExists: true });
+                            return null;
+                        }
+        
+                        return this.userService.create(profesor)
+                    } )
+                ).subscribe(
+                    (newProfesor) => {
                         this.dialogRef.close(newProfesor);
-                    },
+                        
+                    }, 
                     error => {
                         console.log(error);
+                        this.showMessage(error);
+                    },
+                    () => {
+                        this.isSubmitting = false;
                     }
                 )
             } else {

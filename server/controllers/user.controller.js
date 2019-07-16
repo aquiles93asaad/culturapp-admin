@@ -6,8 +6,7 @@ async function check(userEmail, userDocId) {
     try {
         const user = await Usuario.findOne({
             $or: [
-                { email: userEmail },
-                { documentId: userDocId}
+                { email: userEmail }
             ]
         });
         if(user) {
@@ -36,7 +35,7 @@ async function create(user) {
     }
 }
 
-async function get(reqUsuario, filters) {
+async function get(reqUser, filters) {
     try {
         if(typeof filters === 'undefined') {
             filters = {};

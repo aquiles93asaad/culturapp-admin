@@ -71,7 +71,11 @@ export class ProfesoresComponent implements OnInit {
         dialogRef.afterClosed().subscribe(
             result => {
                 if (typeof result !== 'undefined') {
-                    this.refresh({});
+                    let filters = {
+                        esProfesor: true,
+                        centro: (<any>window).user.centro._id
+                    };
+                    this.refresh(filters);
                     if (user)
                         this.showMessage('El profesor fue modificado correctamente');
                     else
@@ -83,18 +87,18 @@ export class ProfesoresComponent implements OnInit {
     private refresh(filters) {
         this.showLoader = true;
         this.userService.get(filters)
-            .subscribe(
-                profesores => {
-                    this.profesores = new MatTableDataSource<User>(profesores);
-                    this.changeDetectorRefs.detectChanges();
-                },
-                error => {
-                    this.showMessage(error.statusText);
-                },
-                () => {
-                    this.showLoader = false;
-                }
-            );
+        .subscribe(
+            profesores => {
+                this.profesores = new MatTableDataSource<User>(profesores);
+                this.changeDetectorRefs.detectChanges();
+            },
+            error => {
+                this.showMessage(error.statusText);
+            },
+            () => {
+                this.showLoader = false;
+            }
+        );
     }
 
     private showMessage(message) {

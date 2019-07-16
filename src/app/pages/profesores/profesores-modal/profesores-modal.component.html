@@ -24,6 +24,7 @@
                 <mat-error *ngIf="!!f.email.errors">
                     <span *ngIf="!!f.email.errors.required">Este campo es obligatorio</span>
                     <span *ngIf="!!f.email.errors.email">El email ingresado es incorrecto</span>
+                    <span *ngIf="!!f.email.errors.userExists">Un usuario con este email ya existe</span>
                 </mat-error>
             </mat-form-field>
 

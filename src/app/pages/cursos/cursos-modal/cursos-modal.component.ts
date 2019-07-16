@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { CursoService, MateriaService, UserService } from '../../../core/services';
 import { Curso, Materia, User } from '../../../core/models';
 import * as moment from 'moment';
@@ -14,8 +14,19 @@ import { forkJoin, Observable } from 'rxjs';
 export class CursosModalComponent implements OnInit {
     isSubmitting: boolean = false;
     cursoForm: FormGroup;
+    diasYHorariosList: FormArray;
     materias: Materia[];
     profesores: User[];
+
+    weekDays = [
+        'Lunes',
+        'Martes',
+        'Miércoles',
+        'Jueves',
+        'Viernes',
+        'Sábado',
+        'Domingo'
+    ];
 
     constructor(
         public dialogRef: MatDialogRef<CursosModalComponent>,
@@ -45,15 +56,33 @@ export class CursosModalComponent implements OnInit {
             profesores: [(this.curso && this.curso.profesores) ? this.curso.profesores : ''],
             fechaInicio: [(this.curso) ? this.curso.fechaInicio : ''],
             fechaFin: [(this.curso) ? this.curso.fechaFin : ''],
-            dia: [(this.curso) ? this.curso.dia : ''],
-            horario: [(this.curso) ? moment(this.curso.horario).format('HH:mm') : ''],
             duracion: [(this.curso) ? this.curso.duracion : ''],
             precio: [(this.curso) ? this.curso.precio : ''],
-
+            diasYHorarios: this.fb.array(this.initialDiasYHorarios())
         });
+
+        this.diasYHorariosList = this.cursoForm.get('diasYHorarios') as FormArray;
     }
 
     get f() { return this.cursoForm.controls; }
+
+    // returns all form groups under diasYHorarios
+    get diasYHorariosFormGroup() {
+        return this.cursoForm.get('diasYHorarios') as FormArray;
+    }
+
+    addQuestion() {
+        this.diasYHorariosList.push(
+            this.fb.group({
+                dia: [''],
+                horario: ['']
+            })
+        );
+    }
+
+    removeQuestion(i) {
+        this.diasYHorariosList.removeAt(i);
+    }
 
     submitForm() {
         if (this.cursoForm.valid) {
@@ -61,17 +90,17 @@ export class CursosModalComponent implements OnInit {
                 let curso = this.cursoForm.value;
                 this.isSubmitting = true;
                 this.cursoService.create(curso)
-                    .subscribe(
-                        newCurso => {
-                            this.dialogRef.close(newCurso);
-                        },
-                        error => {
-                            console.log(error);
-                        },
-                        () => {
-                            this.isSubmitting = false;
-                        }
-                    )
+                .subscribe(
+                    newCurso => {
+                        // this.dialogRef.close(newCurso);
+                    },
+                    error => {
+                        console.log(error);
+                    },
+                    () => {
+                        this.isSubmitting = false;
+                    }
+                )
             } else {
                 if (this.dataChanged()) {
                     this.isSubmitting = true;
@@ -130,4 +159,27 @@ export class CursosModalComponent implements OnInit {
         return forkJoin([materias, profesores]);
     }
 
+    private initialDiasYHorarios(): FormGroup[] {
+        let result: FormGroup[] = [];
+
+        if(this.curso && this.curso.diasYHorarios && this.curso.diasYHorarios.length > 0) {
+            for (let i = 0; i < this.curso.diasYHorarios.length; i++) {
+                result.push(
+                    this.fb.group({
+                        label: [this.curso.diasYHorarios[i].dia],
+                        dataType: [this.curso.diasYHorarios[i].horario]
+                    })
+                );
+            }
+        } else {
+            result.push(
+                this.fb.group({
+                    dia: [''],
+                    horario: ['']
+                })
+            );
+        }
+
+        return result;
+    }
 }
