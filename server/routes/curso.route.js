@@ -10,7 +10,7 @@ router.use(requireAuth);
 router.route('/create').post(asyncHandler(create));
 router.route('/get').post(asyncHandler(get));
 router.route('/update').post(asyncHandler(update));
-// router.route('/remove').post(asyncHandler(update));
+router.route('/addUserToCurso').post(asyncHandler(update));
 
 module.exports = router;
 
@@ -22,12 +22,19 @@ async function create(req, res) {
 
 async function get(req, res) {
     let filters;
+    let myCursos;
     (typeof req.body.filters === 'undefined') ? filters = {} : filters = req.body.filters;
-    const cursos = await cursoCtrl.get(req.user, filters);
+    (typeof req.body.myCursos === 'undefined') ? myCursos = false : myCursos = req.body.myCursos;
+    const cursos = await cursoCtrl.get(req.user, filters, myCursos);
     res.json({ cursos });
 }
 
 async function update(req, res) {
     const curso = await cursoCtrl.update(req.body.curso);
+    res.json({ curso });
+}
+
+async function update(req, res) {
+    const curso = await cursoCtrl.addUserToCurso(req.user, req.body.cursoId);
     res.json({ curso });
 }

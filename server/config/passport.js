@@ -15,7 +15,6 @@ const localLogin = new LocalStrategy({
     if (!user) {
         return done(null, null, { errorMessage: "Usuario o email inexistente", errorType: 'invalid-user' });
     }
-    console.log(user);
 
     if (!bcrypt.compareSync(password, user.hashedPassword)) {
         return done(null, null, { errorMessage: "Contraseña incorrecta", errorType: 'invalid-password' });

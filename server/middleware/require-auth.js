@@ -16,6 +16,7 @@ const requireAuthenticationList = [
     'POST /api/curso/get',
     'POST /api/curso/update',
     'POST /api/curso/remove',
+    'POST /api/curso/addUserToCurso',
 
     'POST /api/materia/create',
     'POST /api/materia/get',

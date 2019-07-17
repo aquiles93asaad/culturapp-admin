@@ -9,7 +9,17 @@ const _ = require('lodash');
 async function create(curso) {
     try {
         let createdCurso = await Curso(curso).save();
+        let profesoresIds = [];
         let asistencias = [];
+        for (let i = 0; i < createdCurso.profesores.length; i++) {
+            profesoresIds.push(createdCurso.profesores[i]);
+        }
+
+        await User.updateMany(
+            { _id: { $in: profesoresIds }},
+            { $push: { cursosInscriptos: createdCurso._id } }
+        )
+
         for (let i = 0; i < curso.diasYHorarios.length; i++) {
             let dates = getDaysBetweenDates(moment(curso.fechaInicio), moment(curso.fechaFin), curso.diasYHorarios[i].dia, createdCurso._id);
             if(asistencias.length == 0) {
@@ -30,12 +40,20 @@ async function create(curso) {
     }
 }
 
-async function get(reqUser, filters) {
+async function get(reqUser, filters, myCursos) {
     try {
         if (reqUser.esAdmin) {
             filters['centro'] = reqUser.centro._id;
         }
 
+        if(!myCursos) {
+            filters['alumnos'] = { $nin: [reqUser._id] };
+        } else {
+            filters['alumnos'] = { $elemMatch: { $in: [reqUser._id] } }
+        }
+
+        console.log(reqUser);
+        console.log(filters);
         let rawCursos = await Curso.find(
             filters
         ).populate({ path: 'centro', model: Centro })
@@ -54,8 +72,32 @@ async function update(cursoData) {
         const updatedCurso = await Curso.findOneAndUpdate(
             { _id: cursoData._id },
             cursoData,
-            { new: true }
+            { returnNewDocument: true }
         );
+        return updatedCurso;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+}
+
+async function addUserToCurso(reqUser, cursoId) {
+    try {
+        const curso = await Curso.findOne(
+            { _id: cursoId },
+        );
+        reqUser.cursosInscriptos.push(cursoId);
+        await User.findOneAndUpdate(
+            { _id: reqUser._id },
+            reqUser
+        )
+        curso.vacantes = curso.vacantes -1;
+        curso.alumnos.push(reqUser._id);
+        const updatedCurso = Curso.findOneAndUpdate(
+            { _id: cursoId },
+            curso,
+            { returnNewDocument: true }
+        )
         return updatedCurso;
     } catch (error) {
         console.log(error);
@@ -103,4 +145,5 @@ module.exports = {
     create,
     get,
     update,
+    addUserToCurso,
 };
