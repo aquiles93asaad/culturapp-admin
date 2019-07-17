@@ -21,11 +21,11 @@
         </div>
         <span class="example-spacer"></span>
         <div>
-            <a *ngIf="user && (router.url.includes('inicio')||router.url.includes('oportunidad-de-venta')||router.url.includes('oportunidades')||router.url.includes('reportes')||router.url.includes('mi-equipo')||router.url.includes('canales-de-venta'))" (click)="faqs()">
+            <!-- <a *ngIf="user && (router.url.includes('inicio')||router.url.includes('oportunidad-de-venta')||router.url.includes('oportunidades')||router.url.includes('reportes')||router.url.includes('mi-equipo')||router.url.includes('canales-de-venta'))" (click)="faqs()">
                 <img class="right-logo" matTooltip="Ayuda" src="assets/images/faqs-icon.png">
-            </a>
+            </a> -->
             <a class="links side" *ngIf="user" [matMenuTriggerFor]="menu">
-                {{user.name | titlecase}} {{user.lastName | titlecase}} <img class="right-logo" src="assets/images/user-icon.png">
+                {{user.nombre | titlecase}} {{user.apellido | titlecase}} <img class="right-logo" src="assets/images/user-icon.png">
             </a>
             <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="profile()">Perfil</button>

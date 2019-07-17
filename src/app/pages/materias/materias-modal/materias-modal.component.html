@@ -1,5 +1,5 @@
-<h1 *ngIf="materia == null" mat-dialog-title class="text-center mb-3">Crear materia</h1>
-<h1 *ngIf="materia != null" mat-dialog-title class="text-center mb-3">Editar materia "{{materia.nombre}}"</h1>
+<h1 *ngIf="materia == null" mat-dialog-title class="text-center mb-3">Crear categoria/tipo de cursos</h1>
+<h1 *ngIf="materia != null" mat-dialog-title class="text-center mb-3">Editar categoria/tipo "{{materia.nombre}}"</h1>
 <div mat-dialog-content>
     <form [formGroup]="materiaForm" class="h-100 d-flex flex-column">
         <div class="row mb-3">
@@ -13,7 +13,7 @@
 
         <div class="row mb-3">
             <mat-form-field class="col-12">
-                <textarea matInput placeholder="Descripción breve de la materia" type="textarea" name="descripcion" formControlName="descripcion" [required]="true"></textarea>
+                <textarea matInput placeholder="Descripción breve" type="textarea" name="descripcion" formControlName="descripcion"></textarea>
                 <mat-error *ngIf="!!f.descripcion.errors">
                     <span *ngIf="!!f.descripcion.errors.required">Este campo es obligatorio</span>
                 </mat-error>

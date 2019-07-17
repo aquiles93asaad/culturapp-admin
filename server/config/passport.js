@@ -11,7 +11,7 @@ const config = require('./config');
 const localLogin = new LocalStrategy({
     usernameField: 'email'
 }, async (email, password, done) => {
-    let user = await User.findOne({ email }).populate({ path: 'centroAdmin', model: Centro });
+    let user = await User.findOne({ email }).populate({ path: 'centro', model: Centro });
     if (!user) {
         return done(null, null, { errorMessage: "Usuario o email inexistente", errorType: 'invalid-user' });
     }
@@ -30,7 +30,7 @@ const jwtLogin = new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: config.jwtSecret
 }, async (payload, done) => {
-    let user = await User.findById(payload._id).populate({ path: 'centroAdmin', model: Centro });
+    let user = await User.findById(payload._id).populate({ path: 'centro', model: Centro });
 
     if (!user) {
         return done(null, false, { errorMessage: "Token inválido", errorType: 'invalid-token' });

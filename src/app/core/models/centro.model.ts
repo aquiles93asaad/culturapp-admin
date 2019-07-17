@@ -5,7 +5,12 @@ export interface Centro {
     _id?: string,
     nombre: string,
     descripcion: string,
-    direccion: string,
+    telefono: string,
+    sedes: [{
+        localidad: string,
+        direccion: string,
+        nombre: string
+    }],
     profesores: User[],
     cursos: Curso[]
 }

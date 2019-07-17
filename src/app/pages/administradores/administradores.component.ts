@@ -1,24 +1,25 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialog, MatTableDataSource, MatSnackBar } from '@angular/material';
 // import { SelectionModel } from '@angular/cdk/collections';
-import { CentrosModalComponent } from './centros-modal/centros-modal.component';
-import { Breadcrumb, TableColumn, TableAction, Centro, Filter } from '../../core/models';
+import { UserModalComponent } from '../../shared/components';
+import { Breadcrumb, TableColumn, TableAction, User, Filter } from '../../core/models';
 import { ActivatedRoute } from '@angular/router';
-import { CentroService } from '../../core/services'
+import { UserService } from '../../core/services'
 
 @Component({
-    selector: 'app-centros',
-    templateUrl: './centros.component.html',
-    styleUrls: ['./centros.component.scss']
+    selector: 'app-administradores',
+  templateUrl: './administradores.component.html',
+  styleUrls: ['./administradores.component.scss']
 })
-export class CentrosComponent implements OnInit {
-    centros: MatTableDataSource<Centro>;
+export class AdministradoresComponent implements OnInit {
+
+    users: MatTableDataSource<User>;
     showLoader: boolean = false;
 
     columns: TableColumn[] = [
         { name: 'nombre', label: 'Nombre', type: 'string', roles: ['ALL'] },
-        { name: 'descripcion', label: 'Descripción', type: 'string', roles: ['ALL'] },
-        { name: 'telefono', label: 'Teléfono', type: 'string', roles: ['ALL'] },
+        { name: 'apellido', label: 'Apellido', type: 'string', roles: ['ALL'] },
+        { name: 'email', label: 'Email', type: 'string', roles: ['ALL'] },
         { name: 'actions', label: 'Acciones', type: 'action', roles: ['ALL'] }
 	];
 	
@@ -28,7 +29,7 @@ export class CentrosComponent implements OnInit {
 
 	breadcrumbs: Breadcrumb[] = [
         { text: 'Inicio', href: '/dashboard/inicio' },
-        { text: 'Centros', href: '/dashboard/centros' }
+        { text: 'Usuarios', href: '/dashboard/usuarios' }
     ];
 
     filters: Filter[] = [
@@ -39,21 +40,21 @@ export class CentrosComponent implements OnInit {
         public dialog : MatDialog,
         private _route: ActivatedRoute,
         private snackBar: MatSnackBar,
-        private centroService: CentroService,
+        private userService: UserService,
         private changeDetectorRefs: ChangeDetectorRef
     ) { }
 
     ngOnInit() {
         this._route.data.subscribe(
             data => {
-                this.centros = new MatTableDataSource<Centro>(data.centros);
+                this.users = new MatTableDataSource<User>(data.users);
             }
         )
     }
 
-    centrosActions(actionData) {
+    usersActions(actionData) {
         if(actionData.action == 'edit') {
-            this.openCentroModal(actionData.element);
+            this.openUserModal(actionData.element);
         }
 
         if(actionData.action == 'filter') {
@@ -61,30 +62,30 @@ export class CentrosComponent implements OnInit {
         }
     }
 
-    openCentroModal(centro?: Centro) {
-        const dialogRef = this.dialog.open(CentrosModalComponent, {
+    openUserModal(user?: User) {
+        const dialogRef = this.dialog.open(UserModalComponent, {
             height: '96%',
             width: '50%',
-            data: centro
+            data: user
         });;
         dialogRef.afterClosed().subscribe(
             result => {
                 if(typeof result !== 'undefined') {
                     this.refresh({});
-                    if(centro)
-                        this.showMessage('El centro modificada correctamente');
+                    if(user)
+                        this.showMessage('El usuario fue modificado correctamente');
                     else
-                        this.showMessage('El centro fue creada correctamente');
+                        this.showMessage('El usuario fue creado correctamente');
                 }
         });
     }
 
     private refresh(filters) {
         this.showLoader = true;
-        this.centroService.get(filters)
+        this.userService.get(filters)
         .subscribe(
-            centros => {
-                this.centros = new MatTableDataSource<Centro>(centros);
+            users => {
+                this.users = new MatTableDataSource<User>(users);
                 this.changeDetectorRefs.detectChanges();
             },
             error => {

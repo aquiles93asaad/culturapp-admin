@@ -27,7 +27,7 @@ export class MateriasComponent implements OnInit {
 
 	breadcrumbs: Breadcrumb[] = [
         { text: 'Inicio', href: '/dashboard/inicio' },
-        { text: 'Materias', href: '/dashboard/materias' }
+        { text: 'Categorias de cursos', href: '/dashboard/materias' }
     ];
 
     filters: Filter[] = [

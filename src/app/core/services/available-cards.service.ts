@@ -9,11 +9,12 @@ import { Card } from '../models';
 export class AvailableCardsService {
 
     private cards: Card[] = [
+        { text: 'Administradores', name: 'usuarios', onlySuperAdmin: true, roles: ['ALL'], href: '/dashboard/administradores' },
         { text: 'Usuarios', name: 'usuarios', onlySuperAdmin: true, roles: ['ALL'], href: '/dashboard/usuarios' },
-        { text: 'Materias', name: 'materias', onlySuperAdmin: true, roles: ['ALL'], href: '/dashboard/materias' },
-        { text: 'Centros', name: 'centros', onlySuperAdmin: true, roles: ['ALL'], href: '/dashboard/centros' },
-        { text: 'Cursos', name: 'cursos', onlySuperAdmin: false, roles: ['ALL'], href: '/dashboard/cursos' },
         { text: 'Profesores', name: 'profesores', onlySuperAdmin: false, roles: ['ALL'], href: '/dashboard/profesores' },
+        { text: 'Centros', name: 'centros', onlySuperAdmin: true, roles: ['ALL'], href: '/dashboard/centros' },
+        { text: 'Categorias de cursos', name: 'materias', onlySuperAdmin: true, roles: ['ALL'], href: '/dashboard/categorias' },
+        { text: 'Cursos', name: 'cursos', onlySuperAdmin: false, roles: ['ALL'], href: '/dashboard/cursos' },
         { text: 'Asistencias', name: 'asistencias', onlySuperAdmin: false, roles: ['ALL'], href: '/dashboard/asistencias' },
         // { text: 'Notificaciones', name: 'notificaciones', onlySuperAdmin: false, roles: ['ALL'], href: '/dashboard/notificaciones' },
     ];

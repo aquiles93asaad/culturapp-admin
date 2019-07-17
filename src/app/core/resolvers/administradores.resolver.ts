@@ -6,7 +6,7 @@ import { User } from '../models';
 import { UserService } from '../services';
 
 @Injectable()
-export class UsersResolver implements Resolve<User[]> {
+export class AdministradoresResolver implements Resolve<User[]> {
 
     constructor(
         private userService: UserService
@@ -14,13 +14,11 @@ export class UsersResolver implements Resolve<User[]> {
 
     resolve(): Observable<User[]> {
         const filters = {
-            $and: [
-                { esAdmin: false },
-                { esSuperAdmin: false },
-                { esProfesor: false },
+            $or: [
+                { esAdmin: true },
+                { esSuperAdmin: true },
             ]
         }
-
         return this.userService.get(filters);
     }
 }

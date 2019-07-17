@@ -35,6 +35,7 @@ import {
     CursosModalComponent,
     MateriasModalComponent,
     ProfesoresModalComponent,
+    AdministradoresComponent
 } from './pages';
 
 // See the Moment.js docs for the meaning of these formats:
@@ -67,6 +68,7 @@ export const MY_FORMATS = {
         CursosModalComponent,
         MateriasModalComponent,
         ProfesoresModalComponent,
+        AdministradoresComponent,
     ],
     imports: [
         BrowserModule,

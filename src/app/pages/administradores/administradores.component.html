@@ -3,12 +3,12 @@
     <div class="position-relative">
       <app-dynamic-filters 
           [filters]="filters"
-          (parentActions)="usersActions($event)" 
+          (parentActions)="usersActions($event)"
           class="w-100">
       </app-dynamic-filters>
-        <!-- <button class="list-fab-btn on-hover-box-shadow" mat-mini-fab color="primary" matTooltip="Nuevo Usuario" matTooltipPosition="right" (click)="openUserModal()">
+        <button class="list-fab-btn on-hover-box-shadow" mat-mini-fab color="primary" matTooltip="Nuevo Administrador" matTooltipPosition="right" (click)="openUserModal()">
             <mat-icon>add</mat-icon>
-        </button> -->
+        </button>
         <app-dynamic-table
           [dataSource]="users"
           [columnsArray]="columns"

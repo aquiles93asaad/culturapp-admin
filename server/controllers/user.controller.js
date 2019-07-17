@@ -1,14 +1,23 @@
 const bcrypt = require('bcrypt');
 const Usuario = require('../models/usuario.model');
+const Centro = require('../models/centro.model');
 const _ = require('lodash');
 
 async function check(userEmail, userDocId) {
     try {
-        const user = await Usuario.findOne({
-            $or: [
-                { email: userEmail }
-            ]
-        });
+        let filters = {};
+        if(typeof userDocId !== 'undefined') {
+            filters = {
+                $or: [
+                    { email: userEmail },
+                    { dni: userDocId }
+                ]
+            }
+        } else {
+            filters =  { email: userEmail };
+        }
+
+        const user = await Usuario.findOne(filters);
         if(user) {
             return true;
         } else {
@@ -44,8 +53,7 @@ async function get(reqUser, filters) {
         const users = await Usuario.find(
             filters,
             '-hashedPassword'
-        );
-
+        ).populate({ path: 'centro', model: Centro });
         return users;
     } catch(error) {
         console.log(error);

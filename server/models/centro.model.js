@@ -4,16 +4,18 @@ const mongoose = require('mongoose'),
 const CentroSchema = new mongoose.Schema({
     nombre: {
         type: String,
-        required: true
     },
     descripcion: {
         type: String,
-        required: true
     },
-    direccion: {
-        type: String,
-        required: true
+    telefono: {
+        type: String
     },
+    sedes: [{
+        localidad: String,
+        direccion: String,
+        nombre: String
+    }],
     profesores: {
         type: [Schema.Types.ObjectId],
         ref: 'User'

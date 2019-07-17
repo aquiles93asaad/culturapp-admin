@@ -7,8 +7,7 @@ const MateriaSchema = new mongoose.Schema({
         required: true
     },
     descripcion: {
-        type: String,
-        required: true
+        type: String
     },
 }, {
     versionKey: false

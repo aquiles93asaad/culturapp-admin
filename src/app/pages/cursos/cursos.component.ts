@@ -17,7 +17,10 @@ export class CursosComponent implements OnInit {
 
     columns: TableColumn[] = [
         { name: 'nombre', label: 'Nombre', type: 'string', roles: ['ALL'] },
-        { name: 'direccion', label: 'Dirección', type: 'string', roles: ['ALL'] },
+        { name: 'fechaInicio', label: 'Fecha Inicio', type: 'date', roles: ['ALL'] },
+        { name: 'fechaFin', label: 'Fecha Fin', type: 'date', roles: ['ALL'] },
+        { name: 'precio', label: 'Precio', type: 'number', roles: ['ALL'] },
+        { name: 'profesor', label: 'Profesor/es', type: 'string', roles: ['ALL'] },
         { name: 'actions', label: 'Acciones', type: 'action', roles: ['ALL'] }
 	];
 	

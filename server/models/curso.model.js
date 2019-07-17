@@ -4,30 +4,23 @@ const mongoose = require('mongoose'),
 const CursoSchema = new mongoose.Schema({
     nombre: {
         type: String,
-        required: true
     },
     descripcion: {
         type: String,
     },
     fechaInicio: {
         type: Date,
-        required: true
     },
     fechaFin: {
         type: Date,
-        required: true
-    },
-    duracion: {
-        type: Number,
-        required: true
     },
     precio: {
         type: Number,
-        required: true,
     },
     diasYHorarios: [{
         dia: String,
-        horario: String
+        horarioDesde: String,
+        horarioHasta: String
     }],
     nivel: {
         type: String
@@ -35,9 +28,15 @@ const CursoSchema = new mongoose.Schema({
     vacantes: {
         type: Number,
     },
+    sede: {
+        localidad: String,
+        direccion: String,
+        nombre: String,
+        _id: String
+    },
     centro: {
         type: Schema.Types.ObjectId,
-        ref: 'Curso'
+        ref: 'Centro'
     },
     materia:{
         type: Schema.Types.ObjectId,

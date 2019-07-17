@@ -6,6 +6,14 @@ const AsistenciaSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+    estado: {
+        type: String,
+        default: 'Sin cargar'
+    },
+    esFeriado: {
+        type: Boolean,
+        default: false
+    },
     presentes: {
         type: [Schema.Types.ObjectId],
         ref: 'User'
@@ -13,6 +21,10 @@ const AsistenciaSchema = new mongoose.Schema({
     ausentes: {
         type: [Schema.Types.ObjectId],
         ref: 'User'
+    },
+    curso: {
+        type: Schema.Types.ObjectId,
+        ref: 'Curso'
     },
 }, {
     versionKey: false

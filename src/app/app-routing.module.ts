@@ -13,7 +13,8 @@ import {
     MateriasResolver,
     NotificacionsResolver,
     UsersResolver,
-    ProfesoresResolver
+    ProfesoresResolver,
+    AdministradoresResolver
 } from './core/resolvers';
 
 // Components
@@ -26,7 +27,8 @@ import {
     MateriasComponent,
     CentrosComponent,
     NotificacionesComponent,
-    AsistenciasComponent
+    AsistenciasComponent,
+    AdministradoresComponent
 } from './pages';
 
 const routes: Routes = [
@@ -59,7 +61,15 @@ const routes: Routes = [
                 }
             },
             {
-                path: 'materias',
+                path: 'administradores',
+                component: AdministradoresComponent,
+                canActivate: [AuthGuard],
+                resolve: {
+                    users: AdministradoresResolver
+                }
+            },
+            {
+                path: 'categorias',
                 component: MateriasComponent,
                 canActivate: [AuthGuard],
                 resolve: {
@@ -129,7 +139,8 @@ const routes: Routes = [
         MateriasResolver,
         NotificacionsResolver,
         UsersResolver,
-        ProfesoresResolver
+        ProfesoresResolver,
+        AdministradoresResolver
     ],
     declarations: []
 })

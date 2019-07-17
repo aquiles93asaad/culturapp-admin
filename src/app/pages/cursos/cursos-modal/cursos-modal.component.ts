@@ -28,6 +28,8 @@ export class CursosModalComponent implements OnInit {
         'Domingo'
     ];
 
+    sedes = (<any>window).user.centro.sedes;
+
     constructor(
         public dialogRef: MatDialogRef<CursosModalComponent>,
         private fb: FormBuilder,
@@ -56,8 +58,9 @@ export class CursosModalComponent implements OnInit {
             profesores: [(this.curso && this.curso.profesores) ? this.curso.profesores : ''],
             fechaInicio: [(this.curso) ? this.curso.fechaInicio : ''],
             fechaFin: [(this.curso) ? this.curso.fechaFin : ''],
-            duracion: [(this.curso) ? this.curso.duracion : ''],
             precio: [(this.curso) ? this.curso.precio : ''],
+            vacantes: [(this.curso) ? this.curso.vacantes : ''],
+            sede: [(this.curso) ? this.curso.sede._id : ''],
             diasYHorarios: this.fb.array(this.initialDiasYHorarios())
         });
 
@@ -71,16 +74,17 @@ export class CursosModalComponent implements OnInit {
         return this.cursoForm.get('diasYHorarios') as FormArray;
     }
 
-    addQuestion() {
+    addDiaYHorario() {
         this.diasYHorariosList.push(
             this.fb.group({
                 dia: [''],
-                horario: ['']
+                horarioDesde: [''],
+                horarioHasta: ['']
             })
         );
     }
 
-    removeQuestion(i) {
+    removeDiaYHorario(i) {
         this.diasYHorariosList.removeAt(i);
     }
 
@@ -89,10 +93,11 @@ export class CursosModalComponent implements OnInit {
             if (!this.curso) {
                 let curso = this.cursoForm.value;
                 this.isSubmitting = true;
+                this.changeCursoSede(curso);
                 this.cursoService.create(curso)
                 .subscribe(
                     newCurso => {
-                        // this.dialogRef.close(newCurso);
+                        this.dialogRef.close(newCurso);
                     },
                     error => {
                         console.log(error);
@@ -104,18 +109,19 @@ export class CursosModalComponent implements OnInit {
             } else {
                 if (this.dataChanged()) {
                     this.isSubmitting = true;
+                    this.changeCursoSede(this.curso);
                     this.cursoService.update(this.curso)
-                        .subscribe(
-                            constants => {
-                                this.dialogRef.close(constants);
-                            },
-                            error => {
-                                this.showMessage(error.statusText);
-                            },
-                            () => {
-                                this.isSubmitting = false;
-                            }
-                        )
+                    .subscribe(
+                        curso => {
+                            this.dialogRef.close(curso);
+                        },
+                        error => {
+                            this.showMessage(error.statusText);
+                        },
+                        () => {
+                            this.isSubmitting = false;
+                        }
+                    )
                 } else {
                     this.onNoClick();
                 }
@@ -166,8 +172,9 @@ export class CursosModalComponent implements OnInit {
             for (let i = 0; i < this.curso.diasYHorarios.length; i++) {
                 result.push(
                     this.fb.group({
-                        label: [this.curso.diasYHorarios[i].dia],
-                        dataType: [this.curso.diasYHorarios[i].horario]
+                        dia: [this.curso.diasYHorarios[i].dia],
+                        horarioDesde: [this.curso.diasYHorarios[i].horarioDesde],
+                        horarioHasta: [this.curso.diasYHorarios[i].horarioHasta]
                     })
                 );
             }
@@ -175,11 +182,21 @@ export class CursosModalComponent implements OnInit {
             result.push(
                 this.fb.group({
                     dia: [''],
-                    horario: ['']
+                    horarioDesde: [''],
+                    horarioHasta: ['']
                 })
             );
         }
 
         return result;
+    }
+
+    private changeCursoSede(curso) {
+        for (let i = 0; i < this.sedes.length; i++) {
+            if(curso.sede == this.sedes[i]._id) {
+                curso.sede = this.sedes[i];
+                break;
+            }
+        }
     }
 }

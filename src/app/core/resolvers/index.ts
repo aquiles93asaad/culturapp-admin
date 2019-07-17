@@ -6,3 +6,4 @@ export * from './materias.resolver';
 export * from './notificaciones.resolver';
 export * from './profesores.resolver';
 export * from './users.resolver';
+export * from './administradores.resolver';

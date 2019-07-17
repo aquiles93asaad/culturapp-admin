@@ -69,13 +69,13 @@
         </div>
 
         <div class="row mb-3">
-            <mat-form-field class="col-12 col-sm-6">
+            <!-- <mat-form-field class="col-12 col-sm-4">
                 <input matInput placeholder="Duración" type="number" name="duracion" formControlName="duracion" [required]="true">
                 <mat-error *ngIf="!!f.duracion.errors">
                     <span *ngIf="!!f.duracion.errors.required">Este campo es obligatorio</span>
                 </mat-error>
                 <mat-hint align="end">En horas</mat-hint>
-            </mat-form-field>
+            </mat-form-field> -->
             
             <mat-form-field class="col-12 col-sm-6">
                 <input matInput placeholder="Precio" type="precio" name="precio" formControlName="precio" [required]="true">
@@ -83,32 +83,50 @@
                     <span *ngIf="!!f.precio.errors.required">Este campo es obligatorio</span>
                 </mat-error>
             </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-6">
+                <input matInput placeholder="Vacantes" type="vacantes" name="vacantes" formControlName="vacantes" [required]="true">
+                <mat-error *ngIf="!!f.vacantes.errors">
+                    <span *ngIf="!!f.vacantes.errors.required">Este campo es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row mb-3">
+            <mat-form-field class="col-12 col-sm-12">
+                <mat-select placeholder="Sede" name="sede" formControlName="sede" [required]="true">
+                    <mat-option *ngFor="let sede of sedes" [value]="sede._id">{{sede.localidad}} - {{sede.nombre}}</mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
 
         <div class="row flex-fill mb-3">
-            <div class="col-12">Días y horarios del curso</div>
+            <div class="col-12">Días y horarios</div>
             <div formArrayName="diasYHorarios" class="col-12 p-0">
                 <div class="col-12 p-0" *ngFor="let diaYHorario of diasYHorariosFormGroup.controls; let i = index; let first = first;" [formGroupName]="i">
-                    <mat-form-field class="col-12 col-sm-5">
+                    <mat-form-field class="col-12 col-sm-4">
                         <mat-label>Día</mat-label>
                         <mat-select name="dia" formControlName="dia">
                             <mat-option *ngFor="let day of weekDays" [value]="day">{{day}}</mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <mat-form-field class="col-12 col-sm-5">
-                        <input matInput type="time" placeholder="Horario" formControlName="horario">
+                    <mat-form-field class="col-12 col-sm-3">
+                        <input matInput type="time" placeholder="Desde" formControlName="horarioDesde">
                     </mat-form-field>
+                    <mat-form-field class="col-12 col-sm-3">
+                            <input matInput type="time" placeholder="Hasta" formControlName="horarioHasta">
+                        </mat-form-field>
                     <div class="col-2 d-inline-block text-center" *ngIf="!first">
                         <button mat-mini-fab class="on-hover-box-shadow" color="primary"
                             matTooltip="Eliminar pregunta" matTooltipPosition="above"
-                            (click)="removeQuestion(i)">
+                            (click)="removeDiaYHorario(i)">
                             <mat-icon aria-label="action.label">clear</mat-icon>
                         </button>
                     </div>
                 </div>
             </div>
             <div class="col-12">
-                <button mat-button type="button" color="primary" (click)="addQuestion()">Agregar otro día y horario</button>
+                <button mat-button type="button" color="primary" (click)="addDiaYHorario()">Agregar día y horario</button>
             </div>
         </div>
 
