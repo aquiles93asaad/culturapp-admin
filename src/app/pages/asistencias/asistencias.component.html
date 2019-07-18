@@ -1,3 +1,11 @@
-<p>
-  asistencias works!
-</p>
+<div class="pt-4 h-100">
+    <app-breadcrumbs [breadcrumbs]="breadcrumbs"></app-breadcrumbs>
+    <div class="position-relative">
+        <app-dynamic-filters [filters]="filters" (parentActions)="asistenciasActions($event)" class="w-100">
+        </app-dynamic-filters>
+        <app-dynamic-table [dataSource]="asistencias" [columnsArray]="columns" [actions]="actions" [multiCheck]="false"
+            [showLoader]="showLoader" [hasDetail]="false" (parentActions)="asistenciasActions($event)"
+            class="w-100 mb-5 d-flex justify-content-center align-items-center">
+        </app-dynamic-table>
+    </div>
+</div>

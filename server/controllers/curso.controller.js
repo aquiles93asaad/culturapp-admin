@@ -52,13 +52,12 @@ async function get(reqUser, filters, myCursos) {
             filters['alumnos'] = { $elemMatch: { $in: [reqUser._id] } }
         }
 
-        console.log(reqUser);
-        console.log(filters);
         let rawCursos = await Curso.find(
             filters
         ).populate({ path: 'centro', model: Centro })
         .populate({ path: 'profesores', model: User, select: 'nombre apellido' })
-        .populate({ path: 'materia', model: Materia, select: 'nombre' });
+        .populate({ path: 'materia', model: Materia, select: 'nombre' })
+        .populate({ path: 'asistencias', model: Asistencia, populate: [{ path: 'presentes', Model: User, select: 'nombre apellido'}, {path: 'ausentes', Model: User, select: 'nombre apellido'}]});
         const cursos = processCursos(rawCursos);
         return cursos;
     } catch (error) {

@@ -81,6 +81,11 @@ export class AdministradoresComponent implements OnInit {
     }
 
     private refresh(filters) {
+        filters['$or'] = [
+            { esAdmin: true },
+            { esSuperAdmin: true },
+        ];
+
         this.showLoader = true;
         this.userService.get(filters)
         .subscribe(

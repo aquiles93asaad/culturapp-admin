@@ -15,9 +15,9 @@ export class UsersResolver implements Resolve<User[]> {
     resolve(): Observable<User[]> {
         const filters = {
             $and: [
-                { esAdmin: false },
-                { esSuperAdmin: false },
-                { esProfesor: false },
+                { esAdmin: undefined },
+                { esSuperAdmin: undefined },
+                { esProfesor: undefined },
             ]
         }
 
