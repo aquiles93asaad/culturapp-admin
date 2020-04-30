@@ -49,7 +49,7 @@
     "helmet": "^3.12.0",
     "http-errors": "^1.6.3",
     "joi": "^13.3.0",
-    "jquery": "^3.4.0",
+    "jquery": "^3.5.0",
     "jsonwebtoken": "^8.2.1",
     "lodash": "^4.17.11",
     "method-override": "^2.3.10",
